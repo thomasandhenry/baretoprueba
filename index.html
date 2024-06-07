@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase Interactiva</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Bienvenidos a la Clase Interactiva</h1>
+    <button onclick="location.href='alumno.html'">Alumno</button>
+    <button onclick="mostrarFormularioProfesor()">Profesor</button>
+
+    <div id="formularioProfesor" style="display: none;">
+        <h2>Introduzca la contraseña</h2>
+        <form id="formularioProfe">
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Entrar</button>
+            <button type="button" onclick="ocultarFormularioProfesor()">Cancelar</button>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
