@@ -7,7 +7,8 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
- <style>
+    <!-- Estilo CSS personalizado -->
+    <style>
         /* Estilo para los botones */
         button {
             padding: 10px 20px; /* Aumenta el padding para hacer los botones más grandes */
@@ -54,13 +55,12 @@
         // Tu configuración de Firebase (reemplaza con tu propia configuración)
         var firebaseConfig = {
             apiKey: "AIzaSyD8h3lzN5yP5N0aZNjdmy7kDI0aClUc_Wk",
- 	 authDomain: "clasepruebagad.firebaseapp.com",
- 	 databaseURL: "https://clasepruebagad-default-rtdb.europe-west1.firebasedatabase.app",
- 	 projectId: "clasepruebagad",
-  	storageBucket: "clasepruebagad.appspot.com",
-  	messagingSenderId: "319326223452",
-  	appId: "1:319326223452:web:90ce724342c15427a17a99",
-  	measurementId: "G-KLBGHZNC21"
+            authDomain: "clasepruebagad.firebaseapp.com",
+            databaseURL: "https://clasepruebagad-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "clasepruebagad",
+            storageBucket: "clasepruebagad.appspot.com",
+            messagingSenderId: "319326223452",
+            appId: "1:319326223452:web:90ce724342c15427a17a99"
         };
         // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
@@ -94,7 +94,9 @@
                 };
                 database.ref().update(updates);
                 alert("Asignatura enviada");
-                goBack();
+                document.getElementById("studentName").value = "";
+                document.getElementById("studentSubject").value = "";
+                loadStudents(); // Cargar la lista de alumnos nuevamente
             } else {
                 alert("Por favor, rellena todos los campos");
             }
@@ -119,9 +121,23 @@
                     var student = childSnapshot.val();
                     var li = document.createElement("li");
                     li.textContent = student.name + ": " + student.subject;
+                    var deleteButton = document.createElement("button");
+                    deleteButton.textContent = "Eliminar";
+                    deleteButton.onclick = function() {
+                        deleteStudent(childSnapshot.key);
+                    };
+                    li.appendChild(deleteButton);
                     studentList.appendChild(li);
                 });
             });
+        }
+
+        function deleteStudent(studentKey) {
+            var confirmDelete = confirm("¿Estás seguro de que quieres eliminar esta entrada?");
+            if (confirmDelete) {
+                database.ref('students').child(studentKey).remove();
+                loadStudents(); // Recargar la lista de alumnos después de eliminar
+            }
         }
     </script>
 </body>
