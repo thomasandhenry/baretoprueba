@@ -4,23 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clase Interactiva</title>
-    <link rel="stylesheet" href="styles.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 </head>
 <body>
-    <h1>Bienvenidos a la Clase Interactiva</h1>
-    <button onclick="location.href='alumno.html'">Alumno</button>
-    <button onclick="mostrarFormularioProfesor()">Profesor</button>
-
-    <div id="formularioProfesor" style="display: none;">
-        <h2>Introduzca la contraseña</h2>
-        <form id="formularioProfe">
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Entrar</button>
-            <button type="button" onclick="ocultarFormularioProfesor()">Cancelar</button>
-        </form>
+    <div id="main">
+        <button onclick="goToStudent()">Alumno</button>
+        <button onclick="goToTeacher()">Profesor</button>
     </div>
 
-    <script src="script.js"></script>
+    <div id="student" style="display:none;">
+        <h1>Alumno</h1>
+        <input type="text" id="studentName" placeholder="Tu nombre">
+        <input type="text" id="studentSubject" placeholder="Asignatura favorita">
+        <button onclick="submitStudent()">Enviar</button>
+        <button onclick="goBack()">Atrás</button>
+    </div>
+
+    <div id="teacher" style="display:none;">
+        <h1>Profesor</h1>
+        <input type="password" id="teacherPassword" placeholder="Contraseña">
+        <button onclick="checkPassword()">Entrar</button>
+        <button onclick="goBack()">Atrás</button>
+        <div id="teacherContent" style="display:none;">
+            <h2>Lista de Alumnos</h2>
+            <ul id="studentList"></ul>
+        </div>
+    </div>
+
+    <script>
+        // Tu configuración de Firebase (reemplaza con tu propia configuración)
+        var firebaseConfig = {
+            apiKey: "AIzaSyD8h3lzN5yP5N0aZNjdmy7kDI0aClUc_Wk",
+ 	 authDomain: "clasepruebagad.firebaseapp.com",
+ 	 databaseURL: "https://clasepruebagad-default-rtdb.europe-west1.firebasedatabase.app",
+ 	 projectId: "clasepruebagad",
+  	storageBucket: "clasepruebagad.appspot.com",
+  	messagingSenderId: "319326223452",
+  	appId: "1:319326223452:web:90ce724342c15427a17a99",
+  	measurementId: "G-KLBGHZNC21"
+        };
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        var database = firebase.database();
+
+        function goToStudent() {
+            document.getElementById("main").style.display = "none";
+            document.getElementById("student").style.display = "block";
+        }
+
+        function goToTeacher() {
+            document.getElementById("main").style.display = "none";
+            document.getElementById("teacher").style.display = "block";
+        }
+
+        function goBack() {
+            document.getElementById("student").style.display = "none";
+            document.getElementById("teacher").style.display = "none";
+            document.getElementById("main").style.display = "block";
+        }
+
+        function submitStudent() {
+            var name = document.getElementById("studentName").value;
+            var subject = document.getElementById("studentSubject").value;
+            if (name && subject) {
+                var newStudentKey = database.ref().child('students').push().key;
+                var updates = {};
+                updates['/students/' + newStudentKey] = {
+                    name: name,
+                    subject: subject
+                };
+                database.ref().update(updates);
+                alert("Asignatura enviada");
+                goBack();
+            } else {
+                alert("Por favor, rellena todos los campos");
+            }
+        }
+
+        function checkPassword() {
+            var password = document.getElementById("teacherPassword").value;
+            if (password === "soyprofe") {
+                document.getElementById("teacherPassword").style.display = "none";
+                document.getElementById("teacherContent").style.display = "block";
+                loadStudents();
+            } else {
+                alert("Contraseña incorrecta");
+            }
+        }
+
+        function loadStudents() {
+            var studentList = document.getElementById("studentList");
+            studentList.innerHTML = "";
+            database.ref('students').on('value', function(snapshot) {
+                snapshot.forEach(function(childSnapshot) {
+                    var student = childSnapshot.val();
+                    var li = document.createElement("li");
+                    li.textContent = student.name + ": " + student.subject;
+                    studentList.appendChild(li);
+                });
+            });
+        }
+    </script>
 </body>
 </html>
-
