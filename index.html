@@ -96,7 +96,6 @@
                 alert("Asignatura enviada");
                 document.getElementById("studentName").value = "";
                 document.getElementById("studentSubject").value = "";
-                loadStudents(); // Cargar la lista de alumnos nuevamente
             } else {
                 alert("Por favor, rellena todos los campos");
             }
@@ -107,7 +106,11 @@
             if (password === "soyprofe") {
                 document.getElementById("teacherPassword").style.display = "none";
                 document.getElementById("teacherContent").style.display = "block";
-                loadStudents();
+                loadStudents(); // Cargar la lista de alumnos al entrar en la interfaz de profesor
+                // Escuchar cambios en la base de datos en tiempo real
+                database.ref('students').on('value', function(snapshot) {
+                    loadStudents(); // Volver a cargar la lista de alumnos cuando haya cambios
+                });
             } else {
                 alert("Contraseña incorrecta");
             }
@@ -116,7 +119,7 @@
         function loadStudents() {
             var studentList = document.getElementById("studentList");
             studentList.innerHTML = "";
-            database.ref('students').on('value', function(snapshot) {
+            database.ref('students').once('value').then(function(snapshot) {
                 snapshot.forEach(function(childSnapshot) {
                     var student = childSnapshot.val();
                     var li = document.createElement("li");
@@ -136,7 +139,6 @@
             var confirmDelete = confirm("¿Estás seguro de que quieres eliminar esta entrada?");
             if (confirmDelete) {
                 database.ref('students').child(studentKey).remove();
-                loadStudents(); // Recargar la lista de alumnos después de eliminar
             }
         }
     </script>
