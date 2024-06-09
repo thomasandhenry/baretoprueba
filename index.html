@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase Interactiva</title>
+    <title>Restaurante Interactivo</title>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -28,26 +28,26 @@
 </head>
 <body>
     <div id="main">
-        <button onclick="goToStudent()">Alumno</button>
-        <button onclick="goToTeacher()">Profesor</button>
+        <button onclick="goToCustomer()">CLIENTE</button>
+        <button onclick="goToKitchen()">COCINA</button>
     </div>
 
-    <div id="student" style="display:none;">
-        <h1>Alumno</h1>
-        <input type="text" id="studentName" placeholder="Tu nombre">
-        <input type="text" id="studentSubject" placeholder="Asignatura favorita">
-        <button onclick="submitStudent()">Enviar</button>
+    <div id="customer" style="display:none;">
+        <h1>Cliente</h1>
+        <input type="text" id="tableNumber" placeholder="Número de mesa">
+        <input type="text" id="order" placeholder="Pedido">
+        <button onclick="submitOrder()">Enviar</button>
         <button onclick="goBack()">Atrás</button>
     </div>
 
-    <div id="teacher" style="display:none;">
-        <h1>Profesor</h1>
-        <input type="password" id="teacherPassword" placeholder="Contraseña">
+    <div id="kitchen" style="display:none;">
+        <h1>Cocina</h1>
+        <input type="password" id="kitchenPassword" placeholder="Contraseña">
         <button onclick="checkPassword()">Entrar</button>
         <button onclick="goBack()">Atrás</button>
-        <div id="teacherContent" style="display:none;">
-            <h2>Lista de Alumnos</h2>
-            <ul id="studentList"></ul>
+        <div id="kitchenContent" style="display:none;">
+            <h2>Lista de Pedidos</h2>
+            <ul id="orderList"></ul>
         </div>
     </div>
 
@@ -66,79 +66,79 @@
         firebase.initializeApp(firebaseConfig);
         var database = firebase.database();
 
-        function goToStudent() {
+        function goToCustomer() {
             document.getElementById("main").style.display = "none";
-            document.getElementById("student").style.display = "block";
+            document.getElementById("customer").style.display = "block";
         }
 
-        function goToTeacher() {
+        function goToKitchen() {
             document.getElementById("main").style.display = "none";
-            document.getElementById("teacher").style.display = "block";
+            document.getElementById("kitchen").style.display = "block";
         }
 
         function goBack() {
-            document.getElementById("student").style.display = "none";
-            document.getElementById("teacher").style.display = "none";
+            document.getElementById("customer").style.display = "none";
+            document.getElementById("kitchen").style.display = "none";
             document.getElementById("main").style.display = "block";
         }
 
-        function submitStudent() {
-            var name = document.getElementById("studentName").value;
-            var subject = document.getElementById("studentSubject").value;
-            if (name && subject) {
-                var newStudentKey = database.ref().child('students').push().key;
+        function submitOrder() {
+            var tableNumber = document.getElementById("tableNumber").value;
+            var order = document.getElementById("order").value;
+            if (tableNumber && order) {
+                var newOrderKey = database.ref().child('orders').push().key;
                 var updates = {};
-                updates['/students/' + newStudentKey] = {
-                    name: name,
-                    subject: subject
+                updates['/orders/' + newOrderKey] = {
+                    tableNumber: tableNumber,
+                    order: order
                 };
                 database.ref().update(updates);
-                alert("Asignatura enviada");
-                document.getElementById("studentName").value = "";
-                document.getElementById("studentSubject").value = "";
+                alert("Pedido enviado");
+                document.getElementById("tableNumber").value = "";
+                document.getElementById("order").value = "";
             } else {
                 alert("Por favor, rellena todos los campos");
             }
         }
 
         function checkPassword() {
-            var password = document.getElementById("teacherPassword").value;
-            if (password === "soyprofe") {
-                document.getElementById("teacherPassword").style.display = "none";
-                document.getElementById("teacherContent").style.display = "block";
-                loadStudents(); // Cargar la lista de alumnos al entrar en la interfaz de profesor
+            var password = document.getElementById("kitchenPassword").value;
+            if (password === "cocina") {
+                document.getElementById("kitchenPassword").style.display = "none";
+                document.getElementById("kitchenContent").style.display = "block";
+                loadOrders(); // Cargar la lista de pedidos al entrar en la interfaz de cocina
                 // Escuchar cambios en la base de datos en tiempo real
-                database.ref('students').on('value', function(snapshot) {
-                    loadStudents(); // Volver a cargar la lista de alumnos cuando haya cambios
+                database.ref('orders').on('value', function(snapshot) {
+                    loadOrders(); // Volver a cargar la lista de pedidos cuando haya cambios
                 });
             } else {
                 alert("Contraseña incorrecta");
             }
         }
 
-        function loadStudents() {
-            var studentList = document.getElementById("studentList");
-            studentList.innerHTML = "";
-            database.ref('students').once('value').then(function(snapshot) {
+        function loadOrders() {
+            var orderList = document.getElementById("orderList");
+            orderList.innerHTML = "";
+            database.ref('orders').once('value').then(function(snapshot) {
                 snapshot.forEach(function(childSnapshot) {
-                    var student = childSnapshot.val();
+                    var order = childSnapshot.val();
                     var li = document.createElement("li");
-                    li.textContent = student.name + ": " + student.subject;
+                    li.textContent = "Mesa " + order.tableNumber + ": " + order.order;
                     var deleteButton = document.createElement("button");
                     deleteButton.textContent = "Eliminar";
                     deleteButton.onclick = function() {
-                        deleteStudent(childSnapshot.key);
+                        deleteOrder(childSnapshot.key);
                     };
                     li.appendChild(deleteButton);
-                    studentList.appendChild(li);
+                    orderList.appendChild(li);
                 });
             });
         }
 
-        function deleteStudent(studentKey) {
-            var confirmDelete = confirm("¿Estás seguro de que quieres eliminar esta entrada?");
+        function deleteOrder(orderKey) {
+            var confirmDelete = confirm("¿Estás seguro de que quieres eliminar este pedido?");
             if (confirmDelete) {
-                database.ref('students').child(studentKey).remove();
+                database.ref('orders').child(orderKey).remove();
             }
         }
     </script>
