@@ -24,6 +24,17 @@
         button:hover {
             background-color: darkgreen; /* Cambia el color de fondo a un verde más oscuro */
         }
+
+        /* Disposición vertical de las mesas */
+        #main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #main button {
+            width: 200px;
+        }
     </style>
 </head>
 <body>
@@ -99,13 +110,16 @@
         function submitOrder() {
             var order = document.getElementById("order").value;
             if (currentTableNumber && order) {
-                var newOrderKey = database.ref().child('orders').push().key;
-                var updates = {};
-                updates['/orders/' + newOrderKey] = {
-                    tableNumber: currentTableNumber,
-                    order: order
-                };
-                database.ref().update(updates);
+                var orderRef = database.ref('orders/' + currentTableNumber);
+                orderRef.once('value', function(snapshot) {
+                    var orders = snapshot.val() || {};
+                    if (orders[order]) {
+                        orders[order]++;
+                    } else {
+                        orders[order] = 1;
+                    }
+                    orderRef.set(orders);
+                });
                 alert("Pedido enviado");
                 document.getElementById("order").value = "";
             } else {
@@ -133,24 +147,32 @@
             orderList.innerHTML = "";
             database.ref('orders').once('value').then(function(snapshot) {
                 snapshot.forEach(function(childSnapshot) {
-                    var order = childSnapshot.val();
-                    var li = document.createElement("li");
-                    li.textContent = "Mesa " + order.tableNumber + ": " + order.order;
-                    var deleteButton = document.createElement("button");
-                    deleteButton.textContent = "Eliminar";
-                    deleteButton.onclick = function() {
-                        deleteOrder(childSnapshot.key);
-                    };
-                    li.appendChild(deleteButton);
-                    orderList.appendChild(li);
+                    var tableNumber = childSnapshot.key;
+                    var orders = childSnapshot.val();
+                    for (var order in orders) {
+                        var li = document.createElement("li");
+                        var orderText = "Mesa " + tableNumber + ": " + order;
+                        if (orders[order] > 1) {
+                            orderText += " x" + orders[order];
+                        }
+                        li.textContent = orderText;
+                        var deleteButton = document.createElement("button");
+                        deleteButton.textContent = "Eliminar";
+                        deleteButton.onclick = function() {
+                            deleteOrder(tableNumber, order);
+                        };
+                        li.appendChild(deleteButton);
+                        orderList.appendChild(li);
+                    }
                 });
             });
         }
 
-        function deleteOrder(orderKey) {
+        function deleteOrder(tableNumber, order) {
             var confirmDelete = confirm("¿Estás seguro de que quieres eliminar este pedido?");
             if (confirmDelete) {
-                database.ref('orders').child(orderKey).remove();
+                var orderRef = database.ref('orders/' + tableNumber + '/' + order);
+                orderRef.remove();
             }
         }
     </script>
