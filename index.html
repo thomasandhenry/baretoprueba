@@ -35,25 +35,6 @@
         #main button {
             width: 200px;
         }
-
-        /* Ocultar lista desplegable por defecto */
-        .dropdown-content {
-            display: none;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        /* Mostrar lista desplegable cuando se hace clic */
-        .dropdown.show .dropdown-content {
-            display: flex;
-        }
-
-        /* Estilo para el contenedor de cocina */
-        #kitchenContent {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
     </style>
 </head>
 <body>
@@ -74,39 +55,8 @@
 
     <div id="customer" style="display:none;">
         <h1>Cliente - Mesa <span id="tableNumber"></span></h1>
-        <div class="dropdown">
-            <button onclick="toggleDropdown(this)">Entrantes</button>
-            <div class="dropdown-content">
-                <button onclick="addOrder('Jamón ibérico')">Jamón ibérico +</button>
-                <button onclick="addOrder('Ensaladilla rusa')">Ensaladilla rusa +</button>
-                <button onclick="addOrder('Croquetas')">Croquetas +</button>
-            </div>
-        </div>
-        <div class="dropdown">
-            <button onclick="toggleDropdown(this)">Platos principales</button>
-            <div class="dropdown-content">
-                <button onclick="addOrder('Filete de ternera')">Filete de ternera +</button>
-                <button onclick="addOrder('Merluza al horno')">Merluza al horno +</button>
-                <button onclick="addOrder('Tartar de salmón y aguacate')">Tartar de salmón y aguacate +</button>
-            </div>
-        </div>
-        <div class="dropdown">
-            <button onclick="toggleDropdown(this)">Postres</button>
-            <div class="dropdown-content">
-                <button onclick="addOrder('Tarta de la abuela')">Tarta de la abuela +</button>
-                <button onclick="addOrder('Natillas')">Natillas +</button>
-                <button onclick="addOrder('Tarta de queso y fruta')">Tarta de queso y fruta +</button>
-            </div>
-        </div>
-        <div class="dropdown">
-            <button onclick="toggleDropdown(this)">Bebidas</button>
-            <div class="dropdown-content">
-                <button onclick="addOrder('Cocacola')">Cocacola +</button>
-                <button onclick="addOrder('Agua')">Agua +</button>
-                <button onclick="addOrder('Cerveza')">Cerveza +</button>
-                <button onclick="addOrder('Vino')">Vino +</button>
-            </div>
-        </div>
+        <input type="text" id="order" placeholder="Pedido">
+        <button onclick="submitOrder()">Enviar</button>
         <button onclick="goBack()">Atrás</button>
     </div>
 
@@ -157,12 +107,8 @@
             currentTableNumber = null;
         }
 
-        function toggleDropdown(button) {
-            var dropdownContent = button.nextElementSibling;
-            dropdownContent.classList.toggle("show");
-        }
-
-        function addOrder(order) {
+        function submitOrder() {
+            var order = document.getElementById("order").value;
             if (currentTableNumber && order) {
                 var orderRef = database.ref('orders/' + currentTableNumber);
                 orderRef.once('value', function(snapshot) {
@@ -175,8 +121,9 @@
                     orderRef.set(orders);
                 });
                 alert("Pedido enviado");
+                document.getElementById("order").value = "";
             } else {
-                alert("Por favor, selecciona una mesa y un pedido");
+                alert("Por favor, rellena el campo de pedido");
             }
         }
 
@@ -202,21 +149,31 @@
                 snapshot.forEach(function(childSnapshot) {
                     var tableNumber = childSnapshot.key;
                     var orders = childSnapshot.val();
-                    var li = document.createElement("li");
-                    var orderText = "Mesa " + tableNumber + ":";
-                    var orderItems = [];
-                    for (var item in orders) {
-                        if (orders[item] > 1) {
-                            orderItems.push(item + " x" + orders[item]);
-                        } else {
-                            orderItems.push(item);
+                    for (var order in orders) {
+                        var li = document.createElement("li");
+                        var orderText = "Mesa " + tableNumber + ": " + order;
+                        if (orders[order] > 1) {
+                            orderText += " x" + orders[order];
                         }
+                        li.textContent = orderText;
+                        var deleteButton = document.createElement("button");
+                        deleteButton.textContent = "Eliminar";
+                        deleteButton.onclick = function() {
+                            deleteOrder(tableNumber, order);
+                        };
+                        li.appendChild(deleteButton);
+                        orderList.appendChild(li);
                     }
-                    orderText += "\n\t" + orderItems.join("\n\t");
-                    li.innerText = orderText;
-                    orderList.appendChild(li);
                 });
             });
+        }
+
+        function deleteOrder(tableNumber, order) {
+            var confirmDelete = confirm("¿Estás seguro de que quieres eliminar este pedido?");
+            if (confirmDelete) {
+                var orderRef = database.ref('orders/' + tableNumber + '/' + order);
+                orderRef.remove();
+            }
         }
     </script>
 </body>
