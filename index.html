@@ -9,8 +9,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <!-- Estilo CSS personalizado -->
     <style>
-        /* Estilo para los botones */
-        button {
+        /* Estilo para los botones de las secciones */
+        button.section {
             padding: 10px 20px;
             font-size: 18px;
             background-color: green;
@@ -20,9 +20,20 @@
             margin: 5px;
         }
 
+        /* Estilo para los botones de los platos */
+        button.dish {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 5px 5px 5px 25px; /* Agregar margen izquierdo para tabular */
+        }
+
         /* Estilo para los botones al pasar el ratón */
         button:hover {
-            background-color: darkgreen;
+            opacity: 0.8;
         }
 
         /* Disposición vertical de las mesas */
@@ -41,8 +52,6 @@
             display: none;
             flex-direction: column;
             align-items: flex-start;
-            padding-left: 20px; /* Agregar espacio hacia la derecha */
-            color: blue; /* Cambiar color del texto */
         }
 
         /* Mostrar lista desplegable cuando se hace clic */
@@ -61,62 +70,62 @@
 <body>
     <div id="main">
         <h1>Selecciona tu mesa</h1>
-        <button onclick="goToCustomer(1)">Mesa 1</button>
-        <button onclick="goToCustomer(2)">Mesa 2</button>
-        <button onclick="goToCustomer(3)">Mesa 3</button>
-        <button onclick="goToCustomer(4)">Mesa 4</button>
-        <button onclick="goToCustomer(5)">Mesa 5</button>
-        <button onclick="goToCustomer(6)">Mesa 6</button>
-        <button onclick="goToCustomer(7)">Mesa 7</button>
-        <button onclick="goToCustomer(8)">Mesa 8</button>
-        <button onclick="goToCustomer(9)">Mesa 9</button>
-        <button onclick="goToCustomer(10)">Mesa 10</button>
-        <button onclick="goToKitchen()">COCINA</button>
+        <button class="section" onclick="goToCustomer(1)">Mesa 1</button>
+        <button class="section" onclick="goToCustomer(2)">Mesa 2</button>
+        <button class="section" onclick="goToCustomer(3)">Mesa 3</button>
+        <button class="section" onclick="goToCustomer(4)">Mesa 4</button>
+        <button class="section" onclick="goToCustomer(5)">Mesa 5</button>
+        <button class="section" onclick="goToCustomer(6)">Mesa 6</button>
+        <button class="section" onclick="goToCustomer(7)">Mesa 7</button>
+        <button class="section" onclick="goToCustomer(8)">Mesa 8</button>
+        <button class="section" onclick="goToCustomer(9)">Mesa 9</button>
+        <button class="section" onclick="goToCustomer(10)">Mesa 10</button>
+        <button class="section" onclick="goToKitchen()">COCINA</button>
     </div>
 
     <div id="customer" style="display:none;">
         <h1>Cliente - Mesa <span id="tableNumber"></span></h1>
         <div>
-            <button onclick="toggleDropdown('entrantes')">Entrantes</button>
+            <button class="section" onclick="toggleDropdown('entrantes')">Entrantes</button>
             <div id="entrantes" class="dropdown-content">
-                <button onclick="addOrder('Jamón ibérico')">Jamón ibérico +</button>
-                <button onclick="addOrder('Ensaladilla rusa')">Ensaladilla rusa +</button>
-                <button onclick="addOrder('Croquetas')">Croquetas +</button>
+                <button class="dish" onclick="addOrder('Jamón ibérico')">Jamón ibérico +</button>
+                <button class="dish" onclick="addOrder('Ensaladilla rusa')">Ensaladilla rusa +</button>
+                <button class="dish" onclick="addOrder('Croquetas')">Croquetas +</button>
             </div>
         </div>
         <div>
-            <button onclick="toggleDropdown('platosPrincipales')">Platos principales</button>
+            <button class="section" onclick="toggleDropdown('platosPrincipales')">Platos principales</button>
             <div id="platosPrincipales" class="dropdown-content">
-                <button onclick="addOrder('Filete de ternera')">Filete de ternera +</button>
-                <button onclick="addOrder('Merluza al horno')">Merluza al horno +</button>
-                <button onclick="addOrder('Tartar de salmón y aguacate')">Tartar de salmón y aguacate +</button>
+                <button class="dish" onclick="addOrder('Filete de ternera')">Filete de ternera +</button>
+                <button class="dish" onclick="addOrder('Merluza al horno')">Merluza al horno +</button>
+                <button class="dish" onclick="addOrder('Tartar de salmón y aguacate')">Tartar de salmón y aguacate +</button>
             </div>
         </div>
         <div>
-            <button onclick="toggleDropdown('postres')">Postres</button>
+            <button class="section" onclick="toggleDropdown('postres')">Postres</button>
             <div id="postres" class="dropdown-content">
-                <button onclick="addOrder('Tarta de la abuela')">Tarta de la abuela +</button>
-                <button onclick="addOrder('Natillas')">Natillas +</button>
-                <button onclick="addOrder('Tarta de queso y fruta')">Tarta de queso y fruta +</button>
+                <button class="dish" onclick="addOrder('Tarta de la abuela')">Tarta de la abuela +</button>
+                <button class="dish" onclick="addOrder('Natillas')">Natillas +</button>
+                <button class="dish" onclick="addOrder('Tarta de queso y fruta')">Tarta de queso y fruta +</button>
             </div>
         </div>
         <div>
-            <button onclick="toggleDropdown('bebidas')">Bebidas</button>
+            <button class="section" onclick="toggleDropdown('bebidas')">Bebidas</button>
             <div id="bebidas" class="dropdown-content">
-                <button onclick="addOrder('Cocacola')">Cocacola +</button>
-                <button onclick="addOrder('Agua')">Agua +</button>
-                <button onclick="addOrder('Cerveza')">Cerveza +</button>
-                <button onclick="addOrder('Vino')">Vino +</button>
+                <button class="dish" onclick="addOrder('Cocacola')">Cocacola +</button>
+                <button class="dish" onclick="addOrder('Agua')">Agua +</button>
+                <button class="dish" onclick="addOrder('Cerveza')">Cerveza +</button>
+                <button class="dish" onclick="addOrder('Vino')">Vino +</button>
             </div>
         </div>
-        <button onclick="goBack()">Atrás</button>
+        <button class="section" onclick="goBack()">Atrás</button>
     </div>
 
     <div id="kitchen" style="display:none;">
         <h1>Cocina</h1>
         <input type="password" id="kitchenPassword" placeholder="Contraseña">
-        <button onclick="checkPassword()">Entrar</button>
-        <button onclick="goBack()">Atrás</button>
+        <button class="section" onclick="checkPassword()">Entrar</button>
+        <button class="section" onclick="goBack()">Atrás</button>
         <div id="kitchenContent" style="display:none;">
             <h2>Lista de Pedidos</h2>
             <ul id="orderList"></ul>
@@ -188,9 +197,9 @@
                 document.getElementById("kitchenPassword").style.display = "none";
                 document.getElementById("kitchenContent").style.display = "block";
                 loadOrders(); // Cargar la lista de pedidos al entrar en la interfaz de cocina
-                // Escuchar cambios en la base de datos en tiempo real
+                // Escuchar los cambios en la base de datos y actualizar la lista en tiempo real
                 database.ref('orders').on('value', function(snapshot) {
-                    loadOrders(); // Volver a cargar la lista de pedidos cuando haya cambios
+                    loadOrders();
                 });
             } else {
                 alert("Contraseña incorrecta");
@@ -199,26 +208,28 @@
 
         function loadOrders() {
             var orderList = document.getElementById("orderList");
-            orderList.innerHTML = "";
-            database.ref('orders').once('value').then(function(snapshot) {
-                snapshot.forEach(function(childSnapshot) {
-                    var tableNumber = childSnapshot.key;
-                    var orders = childSnapshot.val();
+            orderList.innerHTML = ""; // Limpiar la lista antes de volver a cargarla
+            database.ref('orders').once('value', function(snapshot) {
+                snapshot.forEach(function(tableSnapshot) {
+                    var tableNumber = tableSnapshot.key;
+                    var orders = tableSnapshot.val();
                     var li = document.createElement("li");
                     var orderText = "Mesa " + tableNumber + ":";
                     var orderItems = [];
-                    for (var item in orders) {
-                        if (orders[item] > 1) {
-                            orderItems.push(item + " x" + orders[item]);
-                        } else {
-                            orderItems.push(item);
+                    for (var dish in orders) {
+                        if (orders.hasOwnProperty(dish)) {
+                            orderItems.push(dish + " (" + orders[dish] + ")");
                         }
                     }
                     orderText += " " + orderItems.join(", ");
-                    li.innerText = orderText;
+                    li.innerHTML = orderText + ' <button onclick="deleteOrder(\'' + tableNumber + '\')">Eliminar</button>';
                     orderList.appendChild(li);
                 });
             });
+        }
+
+        function deleteOrder(tableNumber) {
+            database.ref('orders/' + tableNumber).remove();
         }
     </script>
 </body>
