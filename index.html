@@ -20,6 +20,28 @@
             margin: 5px;
         }
 
+        /* Estilo para los botones de añadir platos */
+        button.add {
+            padding: 5px 10px;
+            font-size: 16px;
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        /* Estilo para los platos */
+        .dish {
+            padding: 10px 20px;
+            font-size: 18px;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 5px 5px 5px 25px; /* Agregar margen izquierdo para tabular */
+        }
+
         /* Estilo para los botones al pasar el ratón */
         button:hover {
             opacity: 0.8;
@@ -64,56 +86,6 @@
         .order-item {
             margin-left: 20px;
         }
-
-        /* Estilo para los platos y el botón de añadir */
-        .dish-item {
-            display: flex;
-            align-items: center;
-            margin: 5px 25px;
-        }
-
-        .dish-item span {
-            flex-grow: 1;
-        }
-
-        .dish-item button {
-            background-color: blue;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-left: 10px;
-            padding: 5px 10px;
-        }
-
-        /* Botón azul */
-        .btn-add {
-            background-color: blue;
-        }
-
-        /* Botón verde */
-        .btn-confirm {
-            background-color: green;
-        }
-
-        /* Botón rojo */
-        .btn-remove {
-            background-color: red;
-        }
-
-        /* Estilo para el pedido provisional */
-        .provisional-order {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .provisional-order .dish-item {
-            justify-content: space-between;
-        }
-
-        .provisional-order .dish-item button {
-            margin: 0 5px;
-        }
     </style>
 </head>
 <body>
@@ -137,84 +109,37 @@
         <div>
             <button class="section" onclick="toggleDropdown('entrantes')">Entrantes</button>
             <div id="entrantes" class="dropdown-content">
-                <div class="dish-item">
-                    <span>Jamón ibérico - 10€</span>
-                    <button onclick="addProvisionalOrder('Jamón ibérico', 10)">+</button>
-                </div>
-                <div class="dish-item">
-                    <span>Ensaladilla rusa - 6€</span>
-                    <button onclick="addProvisionalOrder('Ensaladilla rusa', 6)">+</button>
-                </div>
-                <div class="dish-item">
-                    <span>Croquetas - 8€</span>
-                    <button onclick="addProvisionalOrder('Croquetas', 8)">+</button>
-                </div>
+                <div class="dish">Jamón ibérico - 10€ <button class="add" onclick="addOrder('Jamón ibérico')">+</button> <span>(<span id="count-Jamón ibérico">0</span>)</span></div>
+                <div class="dish">Ensaladilla rusa - 7€ <button class="add" onclick="addOrder('Ensaladilla rusa')">+</button> <span>(<span id="count-Ensaladilla rusa">0</span>)</span></div>
+                <div class="dish">Croquetas - 8€ <button class="add" onclick="addOrder('Croquetas')">+</button> <span>(<span id="count-Croquetas">0</span>)</span></div>
             </div>
         </div>
         <div>
             <button class="section" onclick="toggleDropdown('platosPrincipales')">Platos principales</button>
             <div id="platosPrincipales" class="dropdown-content">
-                <div class="dish-item">
-                    <span>Filete de ternera - 18€</span>
-                    <button onclick="addProvisionalOrder('Filete de ternera', 18)">+</button>
-                </div>
-                <div class="dish-item">
-                    <span>Merluza al horno - 15€</span>
-                    <button onclick="addProvisionalOrder('Merluza al horno', 15)">+</button>
-                </div>
-                <div class="dish-item">
-                    <span>Tartar de salmón y aguacate - 20€</span>
-                    <button onclick="addProvisionalOrder('Tartar de salmón y aguacate', 20)">+</button>
-                </div>
+                <div class="dish">Filete de ternera - 15€ <button class="add" onclick="addOrder('Filete de ternera')">+</button> <span>(<span id="count-Filete de ternera">0</span>)</span></div>
+                <div class="dish">Merluza al horno - 12€ <button class="add" onclick="addOrder('Merluza al horno')">+</button> <span>(<span id="count-Merluza al horno">0</span>)</span></div>
+                <div class="dish">Tartar de salmón y aguacate - 14€ <button class="add" onclick="addOrder('Tartar de salmón y aguacate')">+</button> <span>(<span id="count-Tartar de salmón y aguacate">0</span>)</span></div>
             </div>
         </div>
         <div>
             <button class="section" onclick="toggleDropdown('postres')">Postres</button>
             <div id="postres" class="dropdown-content">
-                <div class="dish-item">
-                    <span>Tarta de la abuela - 6€</span>
-                    <button onclick="addProvisionalOrder('Tarta de la abuela', 6)">+</button>
-                </div>
-                <div class="dish-item">
-                    <span>Natillas - 5€</span>
-                    <button onclick="addProvisionalOrder('Natillas', 5)">+</button>
-                </div>
-                <div class="dish-item">
-                    <span>Tarta de queso y fruta - 7€</span>
-                    <button onclick="addProvisionalOrder('Tarta de queso y fruta', 7)">+</button>
-                </div>
+                <div class="dish">Tarta de la abuela - 5€ <button class="add" onclick="addOrder('Tarta de la abuela')">+</button> <span>(<span id="count-Tarta de la abuela">0</span>)</span></div>
+                <div class="dish">Natillas - 4€ <button class="add" onclick="addOrder('Natillas')">+</button> <span>(<span id="count-Natillas">0</span>)</span></div>
+                <div class="dish">Tarta de queso y fruta - 6€ <button class="add" onclick="addOrder('Tarta de queso y fruta')">+</button> <span>(<span id="count-Tarta de queso y fruta">0</span>)</span></div>
             </div>
         </div>
         <div>
             <button class="section" onclick="toggleDropdown('bebidas')">Bebidas</button>
             <div id="bebidas" class="dropdown-content">
-                <div class="dish-item">
-                    <span>Cocacola - 2€</span>
-                    <button onclick="addProvisionalOrder('Cocacola', 2)">+</button>
-                </div>
-                <div class="dish-item">
-                    <span>Agua - 1€</span>
-                    <button onclick="addProvisionalOrder('Agua', 1)">+</button>
-                </div>
-                <div class="dish-item">
-                    <span>Cerveza - 3€</span>
-                    <button onclick="addProvisionalOrder('Cerveza', 3)">+</button>
-                </div>
-                <div class="dish-item">
-                    <span>Vino - 4€</span>
-                    <button onclick="addProvisionalOrder('Vino', 4)">+</button>
-                </div>
+                <div class="dish">Cocacola - 2€ <button class="add" onclick="addOrder('Cocacola')">+</button> <span>(<span id="count-Cocacola">0</span>)</span></div>
+                <div class="dish">Agua - 1€ <button class="add" onclick="addOrder('Agua')">+</button> <span>(<span id="count-Agua">0</span>)</span></div>
+                <div class="dish">Cerveza - 3€ <button class="add" onclick="addOrder('Cerveza')">+</button> <span>(<span id="count-Cerveza">0</span>)</span></div>
+                <div class="dish">Vino - 4€ <button class="add" onclick="addOrder('Vino')">+</button> <span>(<span id="count-Vino">0</span>)</span></div>
             </div>
         </div>
         <button class="section" onclick="goBack()">Atrás</button>
-        <button class="section btn-confirm" onclick="goToConfirmOrder()">Tramitar pedido</button>
-    </div>
-
-    <div id="confirmOrder" style="display:none;">
-        <h1>PEDIDO</h1>
-        <div id="provisionalOrderList" class="provisional-order"></div>
-        <button class="section btn-confirm" onclick="confirmOrder()">CONFIRMAR</button>
-        <button class="section btn-remove" onclick="goBackToCustomer()">ATRÁS</button>
     </div>
 
     <div id="kitchen" style="display:none;">
@@ -229,9 +154,8 @@
     </div>
 
     <script>
-        // Configuración de Firebase
+        // Tu configuración de Firebase (reemplaza con tu propia configuración)
         var firebaseConfig = {
-
             apiKey: "AIzaSyD8h3lzN5yP5N0aZNjdmy7kDI0aClUc_Wk",
             authDomain: "clasepruebagad.firebaseapp.com",
             databaseURL: "https://clasepruebagad-default-rtdb.europe-west1.firebasedatabase.app",
@@ -240,17 +164,18 @@
             messagingSenderId: "319326223452",
             appId: "1:319326223452:web:90ce724342c15427a17a99"
         };
+        // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
         var database = firebase.database();
 
         var currentTableNumber = null;
-        var provisionalOrders = {};
 
         function goToCustomer(tableNumber) {
             currentTableNumber = tableNumber;
-            document.getElementById("tableNumber").innerText = tableNumber;
             document.getElementById("main").style.display = "none";
             document.getElementById("customer").style.display = "block";
+            document.getElementById("tableNumber").innerText = tableNumber;
+            updateOrderCounts();
         }
 
         function goToKitchen() {
@@ -262,90 +187,40 @@
             document.getElementById("customer").style.display = "none";
             document.getElementById("kitchen").style.display = "none";
             document.getElementById("main").style.display = "block";
+            currentTableNumber = null;
         }
 
-        function toggleDropdown(sectionId) {
-            var section = document.getElementById(sectionId);
-            if (section.classList.contains("show")) {
-                section.classList.remove("show");
+        function toggleDropdown(id) {
+            var dropdownContent = document.getElementById(id);
+            dropdownContent.classList.toggle("show");
+        }
+
+        function addOrder(order) {
+            if (currentTableNumber && order) {
+                var orderRef = database.ref('orders/' + currentTableNumber);
+                orderRef.once('value', function(snapshot) {
+                    var orders = snapshot.val() || {};
+                    if (orders[order]) {
+                        orders[order]++;
+                    } else {
+                        orders[order] = 1;
+                    }
+                    orderRef.set(orders);
+                    updateOrderCounts();
+                });
+                alert("Pedido enviado");
             } else {
-                section.classList.add("show");
+                alert("Por favor, selecciona una mesa y un pedido");
             }
-        }
-
-        function addProvisionalOrder(dish, price) {
-            if (!provisionalOrders[currentTableNumber]) {
-                provisionalOrders[currentTableNumber] = {};
-            }
-            if (!provisionalOrders[currentTableNumber][dish]) {
-                provisionalOrders[currentTableNumber][dish] = { count: 0, price: price };
-            }
-            provisionalOrders[currentTableNumber][dish].count++;
-            updateProvisionalOrder();
-        }
-
-        function updateProvisionalOrder() {
-            var orderList = document.getElementById("provisionalOrderList");
-            orderList.innerHTML = "";
-            var orders = provisionalOrders[currentTableNumber];
-            for (var dish in orders) {
-                if (orders.hasOwnProperty(dish)) {
-                    var dishInfo = orders[dish];
-                    var item = document.createElement("div");
-                    item.classList.add("dish-item");
-                    item.innerHTML = dish + " (" + dishInfo.count + ") - " + (dishInfo.count * dishInfo.price) + "€ " +
-                        '<button class="btn-confirm" onclick="addProvisionalOrder(\'' + dish + '\', ' + dishInfo.price + ')">+</button>' +
-                        '<button class="btn-remove" onclick="removeProvisionalOrder(\'' + dish + '\')">-</button>';
-                    orderList.appendChild(item);
-                }
-            }
-        }
-
-        function removeProvisionalOrder(dish) {
-            if (provisionalOrders[currentTableNumber] && provisionalOrders[currentTableNumber][dish]) {
-                provisionalOrders[currentTableNumber][dish].count--;
-                if (provisionalOrders[currentTableNumber][dish].count === 0) {
-                    delete provisionalOrders[currentTableNumber][dish];
-                }
-                updateProvisionalOrder();
-            }
-        }
-
-        function goToConfirmOrder() {
-            document.getElementById("customer").style.display = "none";
-            document.getElementById("confirmOrder").style.display = "block";
-            updateProvisionalOrder();
-        }
-
-        function goBackToCustomer() {
-            document.getElementById("confirmOrder").style.display = "none";
-            document.getElementById("customer").style.display = "block";
-        }
-
-        function confirmOrder() {
-            var orders = provisionalOrders[currentTableNumber];
-            for (var dish in orders) {
-                if (orders.hasOwnProperty(dish)) {
-                    var dishInfo = orders[dish];
-                    var orderRef = database.ref('orders/' + currentTableNumber + '/' + dish);
-                    orderRef.once('value', function(snapshot) {
-                        var count = snapshot.val() || 0;
-                        orderRef.set(count + dishInfo.count);
-                    });
-                }
-            }
-            provisionalOrders[currentTableNumber] = {};
-            updateProvisionalOrder();
-            alert("Pedido confirmado, pronto recibirás tu comida");
-            goBackToCustomer();
         }
 
         function checkPassword() {
             var password = document.getElementById("kitchenPassword").value;
-            if (password === "cocina123") {
-                document.getElementById("kitchen").style.display = "none";
+            if (password === "cocina") {
+                document.getElementById("kitchenPassword").style.display = "none";
                 document.getElementById("kitchenContent").style.display = "block";
                 loadOrders();
+                // Escuchar los cambios en la base de datos y actualizar la lista en tiempo real
                 database.ref('orders').on('value', function(snapshot) {
                     loadOrders();
                 });
@@ -373,7 +248,7 @@
                         if (orders.hasOwnProperty(dish)) {
                             var li = document.createElement("li");
                             li.classList.add("order-item");
-                            li.innerHTML = dish + " (" + orders[dish] + ") " +
+                            li.innerHTML = dish + " (" + orders[dish] + ") " + 
                                            '<button onclick="deleteDish(\'' + tableNumber + '\', \'' + dish + '\')">Eliminar</button>';
                             orderUl.appendChild(li);
                         }
@@ -394,6 +269,23 @@
                     orderRef.remove();
                 }
             });
+        }
+
+        function updateOrderCounts() {
+            if (currentTableNumber) {
+                var orderRef = database.ref('orders/' + currentTableNumber);
+                orderRef.once('value', function(snapshot) {
+                    var orders = snapshot.val() || {};
+                    var dishes = document.querySelectorAll('.dish');
+                    dishes.forEach(function(dish) {
+                        var dishName = dish.textContent.split(' - ')[0];
+                        var countSpan = dish.querySelector('span > span');
+                        if (countSpan) {
+                            countSpan.innerText = orders[dishName] || 0;
+                        }
+                    });
+                });
+            }
         }
     </script>
 </body>
