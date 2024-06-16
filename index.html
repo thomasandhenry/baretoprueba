@@ -117,7 +117,7 @@
 
     <div id="customer" style="display:none;">
         <h1>Cliente - Mesa <span id="tableNumber"></span></h1>
-	<button class="section" onclick="goBack()">Volver a inicio</button>	
+        <button class="section" onclick="goBack()">Volver a inicio</button>
         <div>
             <button class="section" onclick="toggleDropdown('entrantes')">Entrantes</button>
             <div id="entrantes" class="dropdown-content">
@@ -146,9 +146,8 @@
             <button class="section" onclick="toggleDropdown('bebidas')">Bebidas</button>
             <div id="bebidas" class="dropdown-content">
                 <div class="dish"><span>Cocacola - 2€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Cocacola', 2)">+</button></div>
-                <div class="dish"><span>Agua - 1€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Agua', 1)">+</button></div>
-                <div class="dish"><span>Cerveza - 3€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Cerveza', 3)">+</button></div>
-                <div class="dish"><span>Vino - 4€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Vino', 4)">+</button></div>
+                <div class="dish"><span>Agua mineral - 1€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Agua mineral', 1)">+</button></div>
+                <div class="dish"><span>Vino tinto - 3€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Vino tinto', 3)">+</button></div>
             </div>
         </div>
         <button class="section" onclick="goToProvisionalOrder()">Tramitar pedido</button>
@@ -159,6 +158,7 @@
         <div id="provisionalOrderList"></div>
         <button class="section" style="background-color:green;" onclick="confirmOrder()">CONFIRMAR</button>
         <button class="section" style="background-color:red;" onclick="goBackToCustomer()">ATRÁS</button>
+        <button class="section" onclick="goBack()">Volver a inicio</button>
     </div>
 
     <div id="kitchen" style="display:none;">
@@ -169,10 +169,182 @@
             <h2>Pedidos</h2>
             <div id="orderList"></div>
             <button class="section" onclick="goBack()">Atrás</button>
+            <button class="section" onclick="goBack()">Volver a inicio</button>
         </div>
     </div>
 
+    <!-- Scripts JS -->
     <script>
+        var currentTableNumber = null;
+        var provisionalOrders = {};
+
+        function goToCustomer(tableNumber) {
+            currentTableNumber = tableNumber;
+            document.getElementById("tableNumber").innerText = tableNumber;
+            document.getElementById("main").style.display = "none";
+            document.getElementById("customer").style.display = "block";
+            resetProvisionalOrders();
+        }
+
+        function goBack() {
+            document.getElementById("main").style.display = "block";
+            document.getElementById("customer").style.display = "none";
+            document.getElementById("provisionalOrder").style.display = "none";
+            document.getElementById("kitchen").style.display = "none";
+        }
+
+        function goBackToCustomer() {
+            document.getElementById("customer").style.display = "block";
+            document.getElementById("provisionalOrder").style.display = "none";
+        }
+
+        function goToProvisionalOrder() {
+            document.getElementById("customer").style.display = "none";
+            document.getElementById("provisionalOrder").style.display = "block";
+            displayProvisionalOrders();
+        }
+
+        function goToKitchen() {
+            document.getElementById("main").style.display = "none";
+            document.getElementById("kitchen").style.display = "block";
+        }
+
+        function checkPassword() {
+            var password = document.getElementById("kitchenPassword").value;
+            if (password === "1234") {
+                document.getElementById("kitchenContent").style.display = "block";
+                loadOrders();
+            } else {
+                alert("Contraseña incorrecta");
+            }
+        }
+
+        function toggleDropdown(category) {
+            var dropdown = document.getElementById(category);
+            dropdown.classList.toggle("show");
+        }
+
+        function addProvisionalOrder(dish, price) {
+            if (!provisionalOrders[currentTableNumber]) {
+                provisionalOrders[currentTableNumber] = {};
+            }
+            if (!provisionalOrders[currentTableNumber][dish]) {
+                provisionalOrders[currentTableNumber][dish] = { quantity: 0, price: price, note: "" };
+            }
+            provisionalOrders[currentTableNumber][dish].quantity++;
+            updateDishQuantity(dish, provisionalOrders[currentTableNumber][dish].quantity);
+            displayProvisionalOrders();
+        }
+
+        function updateDishQuantity(dish, quantity) {
+            var dishElements = document.querySelectorAll('.dish span');
+            dishElements.forEach(function(span) {
+                if (span.innerText.includes(dish)) {
+                    var quantitySpan = span.nextElementSibling.querySelector('span');
+                    quantitySpan.innerText = quantity;
+                }
+            });
+        }
+
+        function displayProvisionalOrders() {
+            var provisionalOrderList = document.getElementById("provisionalOrderList");
+            provisionalOrderList.innerHTML = "";
+
+            var orders = provisionalOrders[currentTableNumber];
+            for (var dish in orders) {
+                if (orders.hasOwnProperty(dish)) {
+                    var orderItem = document.createElement("div");
+                    orderItem.classList.add("order-item-control");
+                    var itemTotalPrice = orders[dish].quantity * orders[dish].price;
+
+                    orderItem.innerHTML = `
+                        <span>${dish} (${orders[dish].quantity}) - ${itemTotalPrice}€</span>
+                        <div>
+                            <button style="background-color:green;" onclick="addProvisionalOrder('${dish}', ${orders[dish].price})">+</button>
+                            <button style="background-color:red;" onclick="removeProvisionalOrder('${dish}')">-</button>
+                            <button style="background-color:yellow;" onclick="promptNote('${dish}')">Añadir nota</button>
+                        </div>
+                    `;
+                    provisionalOrderList.appendChild(orderItem);
+                }
+            }
+        }
+
+        function promptNote(dish) {
+            var note = prompt("Añadir nota para " + dish + ":");
+            if (note !== null) {
+                provisionalOrders[currentTableNumber][dish].note = note;
+            }
+        }
+
+        function removeProvisionalOrder(dish) {
+            if (provisionalOrders[currentTableNumber] && provisionalOrders[currentTableNumber][dish]) {
+                provisionalOrders[currentTableNumber][dish].quantity--;
+                if (provisionalOrders[currentTableNumber][dish].quantity <= 0) {
+                    delete provisionalOrders[currentTableNumber][dish];
+                }
+            }
+            displayProvisionalOrders();
+        }
+
+        function confirmOrder() {
+            var orders = provisionalOrders[currentTableNumber];
+            if (Object.keys(orders).length > 0) {
+                database.ref('orders/' + currentTableNumber).set(orders);
+                alert("Pedido confirmado");
+                provisionalOrders[currentTableNumber] = {};
+                goBack();
+            } else {
+                alert("No hay pedidos provisionales para confirmar");
+            }
+        }
+
+        function loadOrders() {
+            var orderList = document.getElementById("orderList");
+            orderList.innerHTML = "";
+            database.ref('orders').once('value', function(snapshot) {
+                snapshot.forEach(function(tableSnapshot) {
+                    var tableNumber = tableSnapshot.key;
+                    var orders = tableSnapshot.val();
+                    var tableDiv = document.createElement("div");
+                    var tableHeader = document.createElement("h3");
+                    tableHeader.innerText = "Mesa " + tableNumber + ":";
+                    tableDiv.appendChild(tableHeader);
+
+                    var orderUl = document.createElement("ul");
+                    orderUl.classList.add("order-list");
+
+                    for (var dish in orders) {
+                        if (orders.hasOwnProperty(dish)) {
+                            var li = document.createElement("li");
+                            li.classList.add("order-item");
+                            var noteButton = orders[dish].note ? `<button onclick="alert('${orders[dish].note}')">!</button>` : '';
+                            li.innerHTML = dish + " (" + orders[dish].quantity + ") " + 
+                                           '<button onclick="deleteDish(\'' + tableNumber + '\', \'' + dish + '\')">Eliminar</button>' + noteButton;
+                            orderUl.appendChild(li);
+                        }
+                    }
+                    tableDiv.appendChild(orderUl);
+                    orderList.appendChild(tableDiv);
+                });
+            });
+        }
+
+        function deleteDish(tableNumber, dish) {
+            database.ref('orders/' + tableNumber + '/' + dish).remove();
+            loadOrders();
+        }
+
+        function resetProvisionalOrders() {
+            var dishElements = document.querySelectorAll('.dish span');
+            dishElements.forEach(function(span) {
+                var quantitySpan = span.nextElementSibling.querySelector('span');
+                quantitySpan.innerText = "0";
+            });
+            provisionalOrders[currentTableNumber] = {};
+        }
+
+        // Configuración de Firebase
         var firebaseConfig = {
             apiKey: "AIzaSyD8h3lzN5yP5N0aZNjdmy7kDI0aClUc_Wk",
             authDomain: "clasepruebagad.firebaseapp.com",
@@ -184,192 +356,6 @@
         };
         firebase.initializeApp(firebaseConfig);
         var database = firebase.database();
-
-        var currentTableNumber = null;
-        var provisionalOrders = {};
-
-        function goToCustomer(tableNumber) {
-            currentTableNumber = tableNumber;
-            document.getElementById("main").style.display = "none";
-            document.getElementById("customer").style.display = "block";
-            document.getElementById("tableNumber").innerText = tableNumber;
-        }
-
-        function goToKitchen() {
-            document.getElementById("main").style.display = "none";
-            document.getElementById("kitchen").style.display = "block";
-        }
-
-        function goBack() {
-            document.getElementById("customer").style.display = "none";
-            document.getElementById("kitchen").style.display = "none";
-            document.getElementById("main").style.display = "block";
-            currentTableNumber = null;
-        }
-
-        function goToProvisionalOrder() {
-            document.getElementById("customer").style.display = "none";
-            document.getElementById("provisionalOrder").style.display = "block";
-            displayProvisionalOrders();
-        }
-
-        function goBackToCustomer() {
-            document.getElementById("provisionalOrder").style.display = "none";
-            document.getElementById("customer").style.display = "block";
-        }
-
-        function toggleDropdown(id) {
-            var dropdownContent = document.getElementById(id);
-            dropdownContent.classList.toggle("show");
-        }
-
-function addProvisionalOrder(dish, price) {
-    if (!provisionalOrders[currentTableNumber]) {
-        provisionalOrders[currentTableNumber] = {};
-    }
-    if (!provisionalOrders[currentTableNumber][dish]) {
-        provisionalOrders[currentTableNumber][dish] = { quantity: 0, price: price, note: "" };
-    }
-    provisionalOrders[currentTableNumber][dish].quantity++;
-    updateDishQuantity(dish, provisionalOrders[currentTableNumber][dish].quantity);
-    displayProvisionalOrders();
-}
-
-function updateDishQuantity(dish, quantity) {
-    var dishElements = document.querySelectorAll('.dish span');
-    dishElements.forEach(function(span) {
-        if (span.innerText.includes(dish)) {
-            var quantitySpan = span.nextElementSibling.querySelector('span');
-            quantitySpan.innerText = quantity;
-        }
-    });
-}
-
-
-function displayProvisionalOrders() {
-    var provisionalOrderList = document.getElementById("provisionalOrderList");
-    provisionalOrderList.innerHTML = "";
-
-    var orders = provisionalOrders[currentTableNumber];
-    for (var dish in orders) {
-        if (orders.hasOwnProperty(dish)) {
-            var orderItem = document.createElement("div");
-            orderItem.classList.add("order-item-control");
-            var itemTotalPrice = orders[dish].quantity * orders[dish].price;
-
-            orderItem.innerHTML = `
-                <span>${dish} (${orders[dish].quantity}) - ${itemTotalPrice}€</span>
-                <div>
-                    <button style="background-color:green;" onclick="addProvisionalOrder('${dish}', ${orders[dish].price})">+</button>
-                    <button style="background-color:red;" onclick="removeProvisionalOrder('${dish}')">-</button>
-                    <button style="background-color:yellow;" onclick="promptNote('${dish}')">Añadir nota</button>
-                </div>
-            `;
-            provisionalOrderList.appendChild(orderItem);
-        }
-    }
-}
-
-function promptNote(dish) {
-    var note = prompt("Añadir nota para " + dish + ":");
-    if (note !== null) {
-        provisionalOrders[currentTableNumber][dish].note = note;
-    }
-}
-
-
-        function removeProvisionalOrder(dish) {
-            if (provisionalOrders[currentTableNumber][dish].quantity > 1) {
-                provisionalOrders[currentTableNumber][dish].quantity--;
-            } else {
-                delete provisionalOrders[currentTableNumber][dish];
-            }
-            displayProvisionalOrders();
-        }
-
-        function confirmOrder() {
-            var orders = provisionalOrders[currentTableNumber];
-            var orderRef = database.ref('orders/' + currentTableNumber);
-            orderRef.once('value', function(snapshot) {
-                var currentOrders = snapshot.val() || {};
-                for (var dish in orders) {
-                    if (orders.hasOwnProperty(dish)) {
-                        if (currentOrders[dish]) {
-                            currentOrders[dish] += orders[dish].quantity;
-                        } else {
-                            currentOrders[dish] = orders[dish].quantity;
-                        }
-                    }
-                }
-                orderRef.set(currentOrders, function(error) {
-                    if (!error) {
-                        alert("Pedido confirmado, pronto recibirás tu comida");
-                        provisionalOrders[currentTableNumber] = {};
-                        goBackToCustomer();
-                    } else {
-                        alert("Error al confirmar el pedido");
-                    }
-                });
-            });
-        }
-
-        function checkPassword() {
-            var password = document.getElementById("kitchenPassword").value;
-            if (password === "cocina") {
-                document.getElementById("kitchenPassword").style.display = "none";
-                document.getElementById("kitchenContent").style.display = "block";
-                loadOrders();
-                database.ref('orders').on('value', function(snapshot) {
-                    loadOrders();
-                });
-            } else {
-                alert("Contraseña incorrecta");
-            }
-        }
-
-function loadOrders() {
-    var orderList = document.getElementById("orderList");
-    orderList.innerHTML = "";
-    database.ref('orders').once('value', function(snapshot) {
-        snapshot.forEach(function(tableSnapshot) {
-            var tableNumber = tableSnapshot.key;
-            var orders = tableSnapshot.val();
-            var tableDiv = document.createElement("div");
-            var tableHeader = document.createElement("h3");
-            tableHeader.innerText = "Mesa " + tableNumber + ":";
-            tableDiv.appendChild(tableHeader);
-
-            var orderUl = document.createElement("ul");
-            orderUl.classList.add("order-list");
-
-            for (var dish in orders) {
-                if (orders.hasOwnProperty(dish)) {
-                    var li = document.createElement("li");
-                    li.classList.add("order-item");
-                    var noteButton = orders[dish].note ? `<button onclick="alert('${orders[dish].note}')">!</button>` : '';
-                    li.innerHTML = dish + " (" + orders[dish].quantity + ") " + 
-                                   '<button onclick="deleteDish(\'' + tableNumber + '\', \'' + dish + '\')">Eliminar</button>' + noteButton;
-                    orderUl.appendChild(li);
-                }
-            }
-            tableDiv.appendChild(orderUl);
-            orderList.appendChild(tableDiv);
-        });
-    });
-}
-
-
-        function deleteDish(tableNumber, dish) {
-            var orderRef = database.ref('orders/' + tableNumber + '/' + dish);
-            orderRef.once('value', function(snapshot) {
-                var count = snapshot.val();
-                if (count > 1) {
-                    orderRef.set(count - 1);
-                } else {
-                    orderRef.remove();
-                }
-            });
-        }
     </script>
 </body>
 </html>
