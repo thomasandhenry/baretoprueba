@@ -86,6 +86,36 @@
         .order-item {
             margin-left: 20px;
         }
+
+        /* Estilo para la lista provisional */
+        #provisionalOrderList {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+
+        .provisional-order-item {
+            margin-left: 20px;
+        }
+
+        /* Estilo para la ventana de pedido provisional */
+        #provisionalOrder {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .order-item-control {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .order-item-control button {
+            padding: 5px 10px;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -109,58 +139,66 @@
         <div>
             <button class="section" onclick="toggleDropdown('entrantes')">Entrantes</button>
             <div id="entrantes" class="dropdown-content">
-                <div class="dish">Jamón ibérico - 10€ <button class="add" onclick="addOrder('Jamón ibérico')">+</button> <span>(<span id="count-Jamón ibérico">0</span>)</span></div>
-                <div class="dish">Ensaladilla rusa - 7€ <button class="add" onclick="addOrder('Ensaladilla rusa')">+</button> <span>(<span id="count-Ensaladilla rusa">0</span>)</span></div>
-                <div class="dish">Croquetas - 8€ <button class="add" onclick="addOrder('Croquetas')">+</button> <span>(<span id="count-Croquetas">0</span>)</span></div>
+                <div class="dish">Jamón ibérico - 10€ <button class="add" onclick="addProvisionalOrder('Jamón ibérico', 10)">+</button> <span>(<span id="count-Jamón ibérico">0</span>)</span></div>
+                <div class="dish">Ensaladilla rusa - 7€ <button class="add" onclick="addProvisionalOrder('Ensaladilla rusa', 7)">+</button> <span>(<span id="count-Ensaladilla rusa">0</span>)</span></div>
+                <div class="dish">Croquetas - 8€ <button class="add" onclick="addProvisionalOrder('Croquetas', 8)">+</button> <span>(<span id="count-Croquetas">0</span>)</span></div>
             </div>
         </div>
         <div>
             <button class="section" onclick="toggleDropdown('platosPrincipales')">Platos principales</button>
             <div id="platosPrincipales" class="dropdown-content">
-                <div class="dish">Filete de ternera - 15€ <button class="add" onclick="addOrder('Filete de ternera')">+</button> <span>(<span id="count-Filete de ternera">0</span>)</span></div>
-                <div class="dish">Merluza al horno - 12€ <button class="add" onclick="addOrder('Merluza al horno')">+</button> <span>(<span id="count-Merluza al horno">0</span>)</span></div>
-                <div class="dish">Tartar de salmón y aguacate - 14€ <button class="add" onclick="addOrder('Tartar de salmón y aguacate')">+</button> <span>(<span id="count-Tartar de salmón y aguacate">0</span>)</span></div>
+                <div class="dish">Filete de ternera - 15€ <button class="add" onclick="addProvisionalOrder('Filete de ternera', 15)">+</button> <span>(<span id="count-Filete de ternera">0</span>)</span></div>
+                <div class="dish">Merluza al horno - 12€ <button class="add" onclick="addProvisionalOrder('Merluza al horno', 12)">+</button> <span>(<span id="count-Merluza al horno">0</span>)</span></div>
+                <div class="dish">Tartar de salmón y aguacate - 14€ <button class="add" onclick="addProvisionalOrder('Tartar de salmón y aguacate', 14)">+</button> <span>(<span id="count-Tartar de salmón y aguacate">0</span>)</span></div>
             </div>
         </div>
         <div>
             <button class="section" onclick="toggleDropdown('postres')">Postres</button>
             <div id="postres" class="dropdown-content">
-                <div class="dish">Tarta de la abuela - 5€ <button class="add" onclick="addOrder('Tarta de la abuela')">+</button> <span>(<span id="count-Tarta de la abuela">0</span>)</span></div>
-                <div class="dish">Natillas - 4€ <button class="add" onclick="addOrder('Natillas')">+</button> <span>(<span id="count-Natillas">0</span>)</span></div>
-                <div class="dish">Tarta de queso y fruta - 6€ <button class="add" onclick="addOrder('Tarta de queso y fruta')">+</button> <span>(<span id="count-Tarta de queso y fruta">0</span>)</span></div>
+                <div class="dish">Tarta de la abuela - 5€ <button class="add" onclick="addProvisionalOrder('Tarta de la abuela', 5)">+</button> <span>(<span id="count-Tarta de la abuela">0</span>)</span></div>
+                <div class="dish">Natillas - 4€ <button class="add" onclick="addProvisionalOrder('Natillas', 4)">+</button> <span>(<span id="count-Natillas">0</span>)</span></div>
+                <div class="dish">Tarta de queso y fruta - 6€ <button class="add" onclick="addProvisionalOrder('Tarta de queso y fruta', 6)">+</button> <span>(<span id="count-Tarta de queso y fruta">0</span>)</span></div>
             </div>
         </div>
         <div>
             <button class="section" onclick="toggleDropdown('bebidas')">Bebidas</button>
             <div id="bebidas" class="dropdown-content">
-                <div class="dish">Cocacola - 2€ <button class="add" onclick="addOrder('Cocacola')">+</button> <span>(<span id="count-Cocacola">0</span>)</span></div>
-                <div class="dish">Agua - 1€ <button class="add" onclick="addOrder('Agua')">+</button> <span>(<span id="count-Agua">0</span>)</span></div>
-                <div class="dish">Cerveza - 3€ <button class="add" onclick="addOrder('Cerveza')">+</button> <span>(<span id="count-Cerveza">0</span>)</span></div>
-                <div class="dish">Vino - 4€ <button class="add" onclick="addOrder('Vino')">+</button> <span>(<span id="count-Vino">0</span>)</span></div>
+                <div class="dish">Cocacola - 2€ <button class="add" onclick="addProvisionalOrder('Cocacola', 2)">+</button> <span>(<span id="count-Cocacola">0</span>)</span></div>
+                <div class="dish">Agua - 1€ <button class="add" onclick="addProvisionalOrder('Agua', 1)">+</button> <span>(<span id="count-Agua">0</span>)</span></div>
+                <div class="dish">Cerveza - 3€ <button class="add" onclick="addProvisionalOrder('Cerveza', 3)">+</button> <span>(<span id="count-Cerveza">0</span>)</span></div>
+                <div class="dish">Vino - 4€ <button class="add" onclick="addProvisionalOrder('Vino', 4)">+</button> <span>(<span id="count-Vino">0</span>)</span></div>
             </div>
         </div>
         <button class="section" onclick="goBack()">Atrás</button>
+        <button class="section" style="position: fixed; bottom: 10px; right: 10px;" onclick="goToProvisionalOrder()">Tramitar pedido</button>
+    </div>
+
+    <div id="provisionalOrder" style="display:none;">
+        <h1>PEDIDO</h1>
+        <div id="provisionalOrderList"></div>
+        <button class="section" style="background-color:green;" onclick="confirmOrder()">CONFIRMAR</button>
+        <button class="section" style="background-color:red;" onclick="goBackToCustomer()">ATRÁS</button>
     </div>
 
     <div id="kitchen" style="display:none;">
         <h1>Cocina</h1>
-        <input type="password" id="kitchenPassword" placeholder="Contraseña">
+        <input type="password" id="kitchenPassword" placeholder="Introduce la contraseña">
         <button class="section" onclick="checkPassword()">Entrar</button>
-        <button class="section" onclick="goBack()">Atrás</button>
         <div id="kitchenContent" style="display:none;">
-            <h2>Lista de Pedidos</h2>
+            <h2>Pedidos</h2>
             <div id="orderList"></div>
+            <button class="section" onclick="goBack()">Atrás</button>
         </div>
     </div>
 
     <script>
-        // Tu configuración de Firebase (reemplaza con tu propia configuración)
+        // Configuración de Firebase
         var firebaseConfig = {
-            apiKey: "AIzaSyD8h3lzN5yP5N0aZNjdmy7kDI0aClUc_Wk",
-            authDomain: "clasepruebagad.firebaseapp.com",
-            databaseURL: "https://clasepruebagad-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "clasepruebagad",
-            storageBucket: "clasepruebagad.appspot.com",
+            apiKey: "AIzaSyD-oO3xRO7HQgONom0MshvRtKNmX4XqS7A",
+            authDomain: "asepruebagad.firebaseapp.com",
+            databaseURL: "https://asepruebagad-default-rtdb.firebaseio.com",
+            projectId: "asepruebagad",
+            storageBucket: "asepruebagad.appspot.com",
             messagingSenderId: "319326223452",
             appId: "1:319326223452:web:90ce724342c15427a17a99"
         };
@@ -169,6 +207,7 @@
         var database = firebase.database();
 
         var currentTableNumber = null;
+        var provisionalOrders = {};
 
         function goToCustomer(tableNumber) {
             currentTableNumber = tableNumber;
@@ -187,7 +226,19 @@
             document.getElementById("customer").style.display = "none";
             document.getElementById("kitchen").style.display = "none";
             document.getElementById("main").style.display = "block";
+            document.getElementById("provisionalOrder").style.display = "none";
             currentTableNumber = null;
+        }
+
+        function goBackToCustomer() {
+            document.getElementById("provisionalOrder").style.display = "none";
+            document.getElementById("customer").style.display = "block";
+        }
+
+        function goToProvisionalOrder() {
+            document.getElementById("customer").style.display = "none";
+            document.getElementById("provisionalOrder").style.display = "block";
+            loadProvisionalOrders();
         }
 
         function toggleDropdown(id) {
@@ -195,22 +246,34 @@
             dropdownContent.classList.toggle("show");
         }
 
-        function addOrder(order) {
+        function addProvisionalOrder(order, price) {
             if (currentTableNumber && order) {
-                var orderRef = database.ref('orders/' + currentTableNumber);
-                orderRef.once('value', function(snapshot) {
-                    var orders = snapshot.val() || {};
-                    if (orders[order]) {
-                        orders[order]++;
-                    } else {
-                        orders[order] = 1;
-                    }
-                    orderRef.set(orders);
-                    updateOrderCounts();
-                });
-                alert("Pedido enviado");
+                if (!provisionalOrders[currentTableNumber]) {
+                    provisionalOrders[currentTableNumber] = {};
+                }
+
+                if (provisionalOrders[currentTableNumber][order]) {
+                    provisionalOrders[currentTableNumber][order].count++;
+                } else {
+                    provisionalOrders[currentTableNumber][order] = { count: 1, price: price };
+                }
+                updateOrderCounts();
             } else {
                 alert("Por favor, selecciona una mesa y un pedido");
+            }
+        }
+
+        function updateOrderCounts() {
+            if (currentTableNumber) {
+                var orders = provisionalOrders[currentTableNumber] || {};
+                var dishes = document.querySelectorAll('.dish');
+                dishes.forEach(function(dish) {
+                    var dishName = dish.textContent.split(' - ')[0];
+                    var countSpan = dish.querySelector('span > span');
+                    if (countSpan) {
+                        countSpan.innerText = orders[dishName] ? orders[dishName].count : 0;
+                    }
+                });
             }
         }
 
@@ -271,19 +334,54 @@
             });
         }
 
-        function updateOrderCounts() {
-            if (currentTableNumber) {
+        function loadProvisionalOrders() {
+            var orderList = document.getElementById("provisionalOrderList");
+            orderList.innerHTML = ""; // Limpiar la lista antes de volver a cargarla
+            if (provisionalOrders[currentTableNumber]) {
+                for (var dish in provisionalOrders[currentTableNumber]) {
+                    if (provisionalOrders[currentTableNumber].hasOwnProperty(dish)) {
+                        var orderItem = provisionalOrders[currentTableNumber][dish];
+                        var div = document.createElement("div");
+                        div.classList.add("order-item-control");
+                        div.innerHTML = dish + " - " + (orderItem.count * orderItem.price) + "€ (" + orderItem.count + ") " + 
+                                       '<button class="add" style="background-color:green;" onclick="changeProvisionalOrder(\'' + dish + '\', 1)">+</button>' +
+                                       '<button class="add" style="background-color:red;" onclick="changeProvisionalOrder(\'' + dish + '\', -1)">-</button>';
+                        orderList.appendChild(div);
+                    }
+                }
+            }
+        }
+
+        function changeProvisionalOrder(dish, change) {
+            if (provisionalOrders[currentTableNumber][dish]) {
+                provisionalOrders[currentTableNumber][dish].count += change;
+                if (provisionalOrders[currentTableNumber][dish].count <= 0) {
+                    delete provisionalOrders[currentTableNumber][dish];
+                }
+                loadProvisionalOrders();
+                updateOrderCounts();
+            }
+        }
+
+        function confirmOrder() {
+            if (currentTableNumber && provisionalOrders[currentTableNumber]) {
                 var orderRef = database.ref('orders/' + currentTableNumber);
                 orderRef.once('value', function(snapshot) {
-                    var orders = snapshot.val() || {};
-                    var dishes = document.querySelectorAll('.dish');
-                    dishes.forEach(function(dish) {
-                        var dishName = dish.textContent.split(' - ')[0];
-                        var countSpan = dish.querySelector('span > span');
-                        if (countSpan) {
-                            countSpan.innerText = orders[dishName] || 0;
+                    var existingOrders = snapshot.val() || {};
+                    for (var dish in provisionalOrders[currentTableNumber]) {
+                        if (provisionalOrders[currentTableNumber].hasOwnProperty(dish)) {
+                            var orderItem = provisionalOrders[currentTableNumber][dish];
+                            if (existingOrders[dish]) {
+                                existingOrders[dish] += orderItem.count;
+                            } else {
+                                existingOrders[dish] = orderItem.count;
+                            }
                         }
-                    });
+                    }
+                    orderRef.set(existingOrders);
+                    provisionalOrders[currentTableNumber] = {};
+                    alert("Pedido confirmado, pronto recibirás tu comida");
+                    goBackToCustomer();
                 });
             }
         }
