@@ -120,55 +120,59 @@
         <div>
             <button class="section" onclick="toggleDropdown('entrantes')">Entrantes</button>
             <div id="entrantes" class="dropdown-content">
-                <div class="dish"><span>Jamón ibérico - 5€ (<span id="provisionalQuantity-Jamón ibérico">0</span>)</span><button onclick="addProvisionalOrder('Jamón ibérico', 5)">+</button></div>
-                <div class="dish"><span>Ensaladilla rusa - 3€ (<span id="provisionalQuantity-Ensaladilla rusa">0</span>)</span><button onclick="addProvisionalOrder('Ensaladilla rusa', 3)">+</button></div>
-                <div class="dish"><span>Croquetas - 4€ (<span id="provisionalQuantity-Croquetas">0</span>)</span><button onclick="addProvisionalOrder('Croquetas', 4)">+</button></div>
+                <div class="dish"><span>Jamón ibérico - 5€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Jamón ibérico', 5)">+</button></div>
+                <div class="dish"><span>Ensaladilla rusa - 3€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Ensaladilla rusa', 3)">+</button></div>
+                <div class="dish"><span>Croquetas - 4€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Croquetas', 4)">+</button></div>
             </div>
         </div>
         <div>
             <button class="section" onclick="toggleDropdown('platosPrincipales')">Platos principales</button>
             <div id="platosPrincipales" class="dropdown-content">
-                <div class="dish"><span>Filete de ternera - 12€ (<span id="provisionalQuantity-Filete de ternera">0</span>)</span><button onclick="addProvisionalOrder('Filete de ternera', 12)">+</button></div>
-                <div class="dish"><span>Merluza al horno - 10€ (<span id="provisionalQuantity-Merluza al horno">0</span>)</span><button onclick="addProvisionalOrder('Merluza al horno', 10)">+</button></div>
-                <div class="dish"><span>Tartar de salmón y aguacate - 15€ (<span id="provisionalQuantity-Tartar de salmón y aguacate">0</span>)</span><button onclick="addProvisionalOrder('Tartar de salmón y aguacate', 15)">+</button></div>
+                <div class="dish"><span>Filete de ternera - 12€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Filete de ternera', 12)">+</button></div>
+                <div class="dish"><span>Merluza al horno - 10€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Merluza al horno', 10)">+</button></div>
+                <div class="dish"><span>Tartar de salmón y aguacate - 15€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Tartar de salmón y aguacate', 15)">+</button></div>
             </div>
         </div>
         <div>
             <button class="section" onclick="toggleDropdown('postres')">Postres</button>
             <div id="postres" class="dropdown-content">
-                <div class="dish"><span>Tarta de la abuela - 5€ (<span id="provisionalQuantity-Tarta de la abuela">0</span>)</span><button onclick="addProvisionalOrder('Tarta de la abuela', 5)">+</button></div>
-                <div class="dish"><span>Natillas - 3€ (<span id="provisionalQuantity-Natillas">0</span>)</span><button onclick="addProvisionalOrder('Natillas', 3)">+</button></div>
-                <div class="dish"><span>Tarta de queso y fruta - 6€ (<span id="provisionalQuantity-Tarta de queso y fruta">0</span>)</span><button onclick="addProvisionalOrder('Tarta de queso y fruta', 6)">+</button></div>
+                <div class="dish"><span>Tarta de la abuela - 5€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Tarta de la abuela', 5)">+</button></div>
+                <div class="dish"><span>Natillas - 3€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Natillas', 3)">+</button></div>
+                <div class="dish"><span>Tarta de queso y fruta - 6€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Tarta de queso y fruta', 6)">+</button></div>
             </div>
         </div>
         <div>
             <button class="section" onclick="toggleDropdown('bebidas')">Bebidas</button>
             <div id="bebidas" class="dropdown-content">
-                <div class="dish"><span>Cocacola - 2€ (<span id="provisionalQuantity-Cocacola">0</span>)</span><button onclick="addProvisionalOrder('Cocacola', 2)">+</button></div>
-                <div class="dish"><span>Agua - 1€ (<span id="provisionalQuantity-Agua">0</span>)</span><button onclick="addProvisionalOrder('Agua', 1)">+</button></div>
-                <div class="dish"><span>Cerveza - 3€ (<span id="provisionalQuantity-Cerveza">0</span>)</span><button onclick="addProvisionalOrder('Cerveza', 3)">+</button></div>
-                <div class="dish"><span>Vino - 4€ (<span id="provisionalQuantity-Vino">0</span>)</span><button onclick="addProvisionalOrder('Vino', 4)">+</button></div>
+                <div class="dish"><span>Cocacola - 2€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Cocacola', 2)">+</button></div>
+                <div class="dish"><span>Agua - 1€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Agua', 1)">+</button></div>
+                <div class="dish"><span>Cerveza - 3€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Cerveza', 3)">+</button></div>
+                <div class="dish"><span>Vino - 4€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Vino', 4)">+</button></div>
             </div>
         </div>
         <button class="section" onclick="goToProvisionalOrder()">Tramitar pedido</button>
     </div>
 
     <div id="provisionalOrder" style="display:none;">
-        <h1>Pedido Provisional</h1>
+        <h1>PEDIDO</h1>
         <div id="provisionalOrderList"></div>
-        <button class="section" onclick="confirmOrder()">Confirmar pedido</button>
-        <button class="section" onclick="goToCustomer(currentTable)">ATRÁS</button>
+        <button class="section" style="background-color:green;" onclick="confirmOrder()">CONFIRMAR</button>
+        <button class="section" style="background-color:red;" onclick="goBackToCustomer()">ATRÁS</button>
     </div>
 
     <div id="kitchen" style="display:none;">
-        <h1>COCINA</h1>
-        <div id="kitchenContent"></div>
-        <button class="section" onclick="goToMain()">VOLVER</button>
-	
+        <h1>Cocina</h1>
+        <input type="password" id="kitchenPassword" placeholder="Introduce la contraseña">
+        <button class="section" onclick="checkPassword()">Entrar</button>
+        <div id="kitchenContent" style="display:none;">
+            <h2>Pedidos</h2>
+            <div id="orderList"></div>
+            <button class="section" onclick="goBack()">Atrás</button>
+        </div>
     </div>
 
     <script>
-        const firebaseConfig = {
+        var firebaseConfig = {
             apiKey: "AIzaSyD8h3lzN5yP5N0aZNjdmy7kDI0aClUc_Wk",
             authDomain: "clasepruebagad.firebaseapp.com",
             databaseURL: "https://clasepruebagad-default-rtdb.europe-west1.firebasedatabase.app",
@@ -178,154 +182,171 @@
             appId: "1:319326223452:web:90ce724342c15427a17a99"
         };
         firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+        var database = firebase.database();
 
-        let currentTable = null;
-        let provisionalOrder = {};
+        var currentTableNumber = null;
+        var provisionalOrders = {};
 
         function goToCustomer(tableNumber) {
-            currentTable = tableNumber;
+            currentTableNumber = tableNumber;
             document.getElementById("main").style.display = "none";
             document.getElementById("customer").style.display = "block";
-            document.getElementById("provisionalOrder").style.display = "none";
-            document.getElementById("tableNumber").textContent = tableNumber;
+            document.getElementById("tableNumber").innerText = tableNumber;
+        }
 
-            provisionalOrder = {}; // Limpiar la orden provisional al cambiar de mesa
-            updateProvisionalQuantities(); // Actualizar cantidades provisionales en la carta
+        function goToKitchen() {
+            document.getElementById("main").style.display = "none";
+            document.getElementById("kitchen").style.display = "block";
+        }
+
+        function goBack() {
+            document.getElementById("customer").style.display = "none";
+            document.getElementById("kitchen").style.display = "none";
+            document.getElementById("main").style.display = "block";
+            currentTableNumber = null;
         }
 
         function goToProvisionalOrder() {
             document.getElementById("customer").style.display = "none";
             document.getElementById("provisionalOrder").style.display = "block";
-
-            const provisionalOrderList = document.getElementById("provisionalOrderList");
-            provisionalOrderList.innerHTML = "";
-
-            Object.keys(provisionalOrder).forEach(dish => {
-                const quantity = provisionalOrder[dish].quantity;
-                const note = provisionalOrder[dish].note || ""; // Obtener nota si existe
-                provisionalOrderList.innerHTML += `
-                    <div class="order-item">
-                        ${dish} x${quantity} - ${quantity * provisionalOrder[dish].price}€
-                        <div class="order-item-control">
-                            <button style="background-color:red;" onclick="removeProvisionalOrder('${dish}')">-</button>
-                            <button style="background-color:green;" onclick="addProvisionalOrder('${dish}', ${provisionalOrder[dish].price})">+</button>
-                            <input type="text" placeholder="Notas..." value="${note}" oninput="updateProvisionalNote('${dish}', this.value)">
-                        </div>
-                    </div>
-                `;
-            });
+            displayProvisionalOrders();
         }
 
-        function updateProvisionalNote(dish, note) {
-            if (provisionalOrder[dish]) {
-                provisionalOrder[dish].note = note;
-            }
+        function goBackToCustomer() {
+            document.getElementById("provisionalOrder").style.display = "none";
+            document.getElementById("customer").style.display = "block";
+        }
+
+        function toggleDropdown(id) {
+            var dropdownContent = document.getElementById(id);
+            dropdownContent.classList.toggle("show");
         }
 
         function addProvisionalOrder(dish, price) {
-            if (provisionalOrder[dish]) {
-                provisionalOrder[dish].quantity += 1;
-            } else {
-                provisionalOrder[dish] = { quantity: 1, price: price, note: "" };
+            if (!provisionalOrders[currentTableNumber]) {
+                provisionalOrders[currentTableNumber] = {};
             }
-            updateProvisionalQuantities(); // Actualizar cantidades provisionales en la carta
+            if (!provisionalOrders[currentTableNumber][dish]) {
+                provisionalOrders[currentTableNumber][dish] = { quantity: 0, price: price };
+            }
+            provisionalOrders[currentTableNumber][dish].quantity++;
+            displayProvisionalOrders();
+        }
+
+        function displayProvisionalOrders() {
+            var provisionalOrderList = document.getElementById("provisionalOrderList");
+            provisionalOrderList.innerHTML = "";
+
+            var orders = provisionalOrders[currentTableNumber];
+            for (var dish in orders) {
+                if (orders.hasOwnProperty(dish)) {
+                    var orderItem = document.createElement("div");
+                    orderItem.classList.add("order-item-control");
+                    var itemTotalPrice = orders[dish].quantity * orders[dish].price;
+
+                    orderItem.innerHTML = `
+                        <span>${dish} (${orders[dish].quantity}) - ${itemTotalPrice}€</span>
+                        <div>
+                            <button style="background-color:green;" onclick="addProvisionalOrder('${dish}', ${orders[dish].price})">+</button>
+                            <button style="background-color:red;" onclick="removeProvisionalOrder('${dish}')">-</button>
+                        </div>
+                    `;
+                    provisionalOrderList.appendChild(orderItem);
+                }
+            }
         }
 
         function removeProvisionalOrder(dish) {
-            if (provisionalOrder[dish]) {
-                provisionalOrder[dish].quantity -= 1;
-                if (provisionalOrder[dish].quantity <= 0) {
-                    delete provisionalOrder[dish];
-                }
+            if (provisionalOrders[currentTableNumber][dish].quantity > 1) {
+                provisionalOrders[currentTableNumber][dish].quantity--;
+            } else {
+                delete provisionalOrders[currentTableNumber][dish];
             }
-            goToProvisionalOrder(); // Actualizar lista de pedido provisional
-        }
-// Modificación en la función goToKitchen para asegurar la llamada a checkPassword
-function goToKitchen() {
-    document.getElementById("main").style.display = "none";
-    document.getElementById("kitchen").style.display = "block";
-    document.getElementById("kitchenPassword").style.display = "block"; // Mostrar input de contraseña
-    document.getElementById("kitchenContent").style.display = "none"; // Ocultar contenido de pedidos inicialmente
-    document.getElementById("kitchenPassword").value = ""; // Limpiar el valor del input de contraseña al entrar
-}
-
-// Modificación en la función checkPassword para validar la contraseña y mostrar pedidos
-function checkPassword() {
-    var password = document.getElementById("kitchenPassword").value;
-    if (password === "cocina") {
-        document.getElementById("kitchenPassword").style.display = "none"; // Ocultar input de contraseña
-        document.getElementById("kitchenContent").style.display = "block"; // Mostrar contenido de pedidos
-        loadOrders(); // Cargar los pedidos existentes
-        database.ref('orders').on('value', function(snapshot) {
-            loadOrders(); // Volver a cargar los pedidos si hay cambios en la base de datos
-        });
-    } else {
-        alert("Contraseña incorrecta");
-    }
-}
-
-// Función loadOrders para cargar y mostrar los pedidos en la interfaz de cocina
-function loadOrders() {
-    var orderList = document.getElementById("orderList");
-    orderList.innerHTML = ""; // Limpiar lista de pedidos antes de cargar
-    database.ref('orders').once('value', function(snapshot) {
-        snapshot.forEach(function(tableSnapshot) {
-            var tableNumber = tableSnapshot.key;
-            var orders = tableSnapshot.val();
-            var tableDiv = document.createElement("div");
-            var tableHeader = document.createElement("h3");
-            tableHeader.innerText = "Mesa " + tableNumber + ":";
-            tableDiv.appendChild(tableHeader);
-
-            var orderUl = document.createElement("ul");
-            orderUl.classList.add("order-list");
-
-            for (var dish in orders) {
-                if (orders.hasOwnProperty(dish)) {
-                    var li = document.createElement("li");
-                    li.classList.add("order-item");
-                    li.innerHTML = dish + " (" + orders[dish] + ") " + 
-                                   '<button onclick="deleteDish(\'' + tableNumber + '\', \'' + dish + '\')">Eliminar</button>';
-                    orderUl.appendChild(li);
-                }
-            }
-            tableDiv.appendChild(orderUl);
-            orderList.appendChild(tableDiv);
-        });
-    });
-}
-
-
-        function updateProvisionalQuantities() {
-            Object.keys(provisionalOrder).forEach(dish => {
-                const quantity = provisionalOrder[dish].quantity;
-                document.getElementById(`provisionalQuantity-${dish}`).textContent = quantity;
-            });
+            displayProvisionalOrders();
         }
 
         function confirmOrder() {
-            const orderRef = database.ref('orders/' + currentTable);
-            orderRef.set(provisionalOrder);
-            provisionalOrder = {}; // Limpiar el pedido provisional después de confirmar
-            goToCustomer(currentTable); // Volver a la vista del cliente
+            var orders = provisionalOrders[currentTableNumber];
+            var orderRef = database.ref('orders/' + currentTableNumber);
+            orderRef.once('value', function(snapshot) {
+                var currentOrders = snapshot.val() || {};
+                for (var dish in orders) {
+                    if (orders.hasOwnProperty(dish)) {
+                        if (currentOrders[dish]) {
+                            currentOrders[dish] += orders[dish].quantity;
+                        } else {
+                            currentOrders[dish] = orders[dish].quantity;
+                        }
+                    }
+                }
+                orderRef.set(currentOrders, function(error) {
+                    if (!error) {
+                        alert("Pedido confirmado, pronto recibirás tu comida");
+                        provisionalOrders[currentTableNumber] = {};
+                        goBackToCustomer();
+                    } else {
+                        alert("Error al confirmar el pedido");
+                    }
+                });
+            });
         }
 
-
-        function removeDish(table, dish) {
-            const orderRef = database.ref(`orders/${table}/${dish}`);
-            orderRef.remove();
+        function checkPassword() {
+            var password = document.getElementById("kitchenPassword").value;
+            if (password === "cocina") {
+                document.getElementById("kitchenPassword").style.display = "none";
+                document.getElementById("kitchenContent").style.display = "block";
+                loadOrders();
+                database.ref('orders').on('value', function(snapshot) {
+                    loadOrders();
+                });
+            } else {
+                alert("Contraseña incorrecta");
+            }
         }
 
-        function toggleDropdown(sectionId) {
-            const section = document.getElementById(sectionId);
-            section.classList.toggle("show");
+        function loadOrders() {
+            var orderList = document.getElementById("orderList");
+            orderList.innerHTML = "";
+            database.ref('orders').once('value', function(snapshot) {
+                snapshot.forEach(function(tableSnapshot) {
+                    var tableNumber = tableSnapshot.key;
+                    var orders = tableSnapshot.val();
+                    var tableDiv = document.createElement("div");
+                    var tableHeader = document.createElement("h3");
+                    tableHeader.innerText = "Mesa " + tableNumber + ":";
+                    tableDiv.appendChild(tableHeader);
+
+                    var orderUl = document.createElement("ul");
+                    orderUl.classList.add("order-list");
+
+                    for (var dish in orders) {
+                        if (orders.hasOwnProperty(dish)) {
+                            var li = document.createElement("li");
+                            li.classList.add("order-item");
+                            li.innerHTML = dish + " (" + orders[dish] + ") " + 
+                                           '<button onclick="deleteDish(\'' + tableNumber + '\', \'' + dish + '\')">Eliminar</button>';
+                            orderUl.appendChild(li);
+                        }
+                    }
+                    tableDiv.appendChild(orderUl);
+                    orderList.appendChild(tableDiv);
+                });
+            });
         }
 
-        function goToMain() {
-            document.getElementById("main").style.display = "block";
-            document.getElementById("kitchen").style.display = "none";
+        function deleteDish(tableNumber, dish) {
+            var orderRef = database.ref('orders/' + tableNumber + '/' + dish);
+            orderRef.once('value', function(snapshot) {
+                var count = snapshot.val();
+                if (count > 1) {
+                    orderRef.set(count - 1);
+                } else {
+                    orderRef.remove();
+                }
+            });
         }
     </script>
 </body>
 </html>
+
