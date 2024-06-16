@@ -242,8 +242,50 @@ function updateDishQuantity(dish, quantity) {
         var span = dishElement.querySelector('span');
         if (span.innerText.includes(dish)) {
             var quantitySpan = span.nextElementSibling.querySelector('span');
-            quantitySpan.innerText = provisionalOrders[currentTableNumber][dish].quantity;
+            if (span.innerText.includes(dish)) {
+                quantitySpan.innerText = quantity;
+            }
         }
+    });
+}
+
+function confirmOrder() {
+    var orders = provisionalOrders[currentTableNumber];
+    if (Object.keys(orders).length > 0) {
+        var orderRef = database.ref('orders/' + currentTableNumber);
+        orderRef.once('value', function(snapshot) {
+            var currentOrders = snapshot.val() || {};
+            for (var dish in orders) {
+                if (orders.hasOwnProperty(dish)) {
+                    if (currentOrders[dish]) {
+                        currentOrders[dish].quantity += orders[dish].quantity;
+                    } else {
+                        currentOrders[dish] = orders[dish];
+                    }
+                }
+            }
+            orderRef.set(currentOrders, function(error) {
+                if (!error) {
+                    alert("Pedido confirmado");
+                    provisionalOrders[currentTableNumber] = {};
+                    resetProvisionalOrders();
+                    goBackToCustomer();
+                } else {
+                    alert("Error al confirmar el pedido");
+                }
+            });
+        });
+    } else {
+        alert("No hay pedidos provisionales para confirmar");
+    }
+}
+
+function resetProvisionalOrders() {
+    var dishElements = document.querySelectorAll('.dish');
+    dishElements.forEach(function(dishElement) {
+        var span = dishElement.querySelector('span');
+        var quantitySpan = span.nextElementSibling.querySelector('span');
+        quantitySpan.innerText = "0";
     });
 }
 
@@ -289,27 +331,7 @@ function updateDishQuantity(dish, quantity) {
             displayProvisionalOrders();
         }
 
-function confirmOrder() {
-    var orders = provisionalOrders[currentTableNumber];
-    if (Object.keys(orders).length > 0) {
-        database.ref('orders/' + currentTableNumber).set(orders);
-        alert("Pedido confirmado");
-        provisionalOrders[currentTableNumber] = {};
-        resetProvisionalOrders();
-        goBack();
-    } else {
-        alert("No hay pedidos provisionales para confirmar");
-    }
-}
 
-function resetProvisionalOrders() {
-    var dishElements = document.querySelectorAll('.dish span');
-    dishElements.forEach(function(span) {
-        var quantitySpan = span.nextElementSibling.querySelector('span');
-        quantitySpan.innerText = "0";
-    });
-    provisionalOrders[currentTableNumber] = {};
-}
 
 
         function loadOrders() {
@@ -343,6 +365,7 @@ function resetProvisionalOrders() {
         });
     });
 }
+
 
 
 function deleteDish(tableNumber, dish) {
