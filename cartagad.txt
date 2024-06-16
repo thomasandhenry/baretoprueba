@@ -1,0 +1,14 @@
+nombre precio tipo
+Jamón ibérico 12 Entrantes 
+Ensaladilla rusa	10 Entrantes 
+Croquetas	8 Entrantes 
+Filete de ternera 18 Platos principales
+Merluza al horno 20 Platos principales
+Tartar de salmon y aguacate 15 Platos principales
+Tarta de la abuela 7 Postres
+Natillas 7 Postres
+Tarta de queso 7 Postres
+Cocacola 3.5 Bebidas
+Agua 3 Bebidas
+Cerveza 3.5 Bebidas
+Vino 5 Bebidas

@@ -100,7 +100,7 @@
     </style>
 </head>
 <body>
-    <div id="main">
+<div id="main">
         <h1>Selecciona tu mesa</h1>
         <button class="section" onclick="goToCustomer(1)">Mesa 1</button>
         <button class="section" onclick="goToCustomer(2)">Mesa 2</button>
@@ -118,39 +118,11 @@
     <div id="customer" style="display:none;">
         <h1>Cliente - Mesa <span id="tableNumber"></span></h1>
         <button class="section" onclick="goBack()">Volver a inicio</button>
-        <div>
-            <button class="section" onclick="toggleDropdown('entrantes')">Entrantes</button>
-            <div id="entrantes" class="dropdown-content">
-                <div class="dish"><span>Jamón ibérico - 5€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Jamón ibérico', 5)">+</button></div>
-                <div class="dish"><span>Ensaladilla rusa - 3€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Ensaladilla rusa', 3)">+</button></div>
-                <div class="dish"><span>Croquetas - 4€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Croquetas', 4)">+</button></div>
-            </div>
-        </div>
-        <div>
-            <button class="section" onclick="toggleDropdown('platosPrincipales')">Platos principales</button>
-            <div id="platosPrincipales" class="dropdown-content">
-                <div class="dish"><span>Filete de ternera - 12€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Filete de ternera', 12)">+</button></div>
-                <div class="dish"><span>Merluza al horno - 10€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Merluza al horno', 10)">+</button></div>
-                <div class="dish"><span>Tartar de salmón y aguacate - 15€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Tartar de salmón y aguacate', 15)">+</button></div>
-            </div>
-        </div>
-        <div>
-            <button class="section" onclick="toggleDropdown('postres')">Postres</button>
-            <div id="postres" class="dropdown-content">
-                <div class="dish"><span>Tarta de la abuela - 5€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Tarta de la abuela', 5)">+</button></div>
-                <div class="dish"><span>Natillas - 3€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Natillas', 3)">+</button></div>
-                <div class="dish"><span>Tarta de queso y fruta - 6€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Tarta de queso y fruta', 6)">+</button></div>
-            </div>
-        </div>
-        <div>
-            <button class="section" onclick="toggleDropdown('bebidas')">Bebidas</button>
-            <div id="bebidas" class="dropdown-content">
-                <div class="dish"><span>Cocacola - 2€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Cocacola', 2)">+</button></div>
-                <div class="dish"><span>Agua mineral - 1€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Agua mineral', 1)">+</button></div>
-                <div class="dish"><span>Vino tinto - 3€</span><span>(<span>0</span>)</span><button onclick="addProvisionalOrder('Vino tinto', 3)">+</button></div>
-            </div>
-        </div>
-        <button class="section" onclick="goToProvisionalOrder()">Tramitar pedido</button>
+    </div>
+
+    <!-- Contenedor dinámico para la carta -->
+    <div id="menuContainer">
+        <!-- Aquí se cargarán dinámicamente los platos desde carta.txt -->
     </div>
 
     <div id="provisionalOrder" style="display:none;">
@@ -177,6 +149,70 @@
     <script>
         var currentTableNumber = null;
         var provisionalOrders = {};
+
+	// Función para cargar la carta desde el archivo carta.txt
+function loadMenuFromTxt() {
+    fetch('https://raw.githubusercontent.com/thomasandhenry/baretoprueba/main/cartagad.txt')
+        .then(response => response.text())
+        .then(data => {
+            let menuItems = parseMenu(data);
+            displayMenu(menuItems);
+        })
+        .catch(error => {
+            console.error('Error al cargar la carta:', error);
+        });
+}
+
+// Función para parsear la carta desde el texto obtenido
+function parseMenu(data) {
+    let menuItems = {};
+    let lines = data.split('\n');
+    lines.forEach(line => {
+        if (line.trim() !== '') {
+            let parts = line.split(' ');
+            let nombre = parts.slice(0, -2).join(' '); // Unir el nombre del plato si tiene espacios
+            let precio = parseFloat(parts[parts.length - 2]); // Convertir el precio a número
+            let tipo = parts[parts.length - 1];
+
+            if (!menuItems[tipo]) {
+                menuItems[tipo] = [];
+            }
+            menuItems[tipo].push({ nombre, precio });
+        }
+    });
+    return menuItems;
+}
+
+// Función para mostrar la carta dinámica en la página web
+function displayMenu(menuItems) {
+    let customerDiv = document.getElementById('customer');
+    customerDiv.innerHTML = ''; // Limpiar contenido existente
+
+    Object.keys(menuItems).forEach(tipo => {
+        let sectionDiv = document.createElement('div');
+        sectionDiv.innerHTML = `<h2>${tipo}</h2>`;
+
+        menuItems[tipo].forEach(item => {
+            let dishDiv = document.createElement('div');
+            dishDiv.classList.add('dish');
+            dishDiv.innerHTML = `
+                <span>${item.nombre} - ${item.precio}€</span>
+                <span>(<span>0</span>)</span>
+                <button onclick="addProvisionalOrder('${item.nombre}', ${item.precio})">+</button>
+            `;
+            sectionDiv.appendChild(dishDiv);
+        });
+
+        customerDiv.appendChild(sectionDiv);
+    });
+
+    // Mostrar el contenido después de cargar la carta
+    customerDiv.style.display = 'block';
+}
+
+// Llamar a la función para cargar la carta al inicio
+loadMenuFromTxt();
+
 
         function goToCustomer(tableNumber) {
             currentTableNumber = tableNumber;
