@@ -211,23 +211,36 @@ function displayMenu(menuItems) {
 }
 
 // Llamar a la función para cargar la carta al inicio
-loadMenuFromTxt();
 
 
-        function goToCustomer(tableNumber) {
-            currentTableNumber = tableNumber;
-            document.getElementById("tableNumber").innerText = tableNumber;
-            document.getElementById("main").style.display = "none";
-            document.getElementById("customer").style.display = "block";
-            resetProvisionalOrders();
-        }
 
-        function goBack() {
-            document.getElementById("main").style.display = "block";
-            document.getElementById("customer").style.display = "none";
-            document.getElementById("provisionalOrder").style.display = "none";
-            document.getElementById("kitchen").style.display = "none";
-        }
+// Elimina la llamada a loadMenuFromTxt() al inicio
+
+
+function goToCustomer(tableNumber) {
+    currentTableNumber = tableNumber;
+    document.getElementById("tableNumber").innerText = tableNumber;
+    document.getElementById("main").style.display = "none";
+    document.getElementById("customer").style.display = "block";
+    document.getElementById("provisionalOrder").style.display = "none"; // Asegúrate de ocultar el pedido provisional si se muestra
+    loadMenuFromTxt(); // Llama a la función para cargar la carta al seleccionar una mesa
+    resetProvisionalOrders();
+}
+
+function goBack() {
+    document.getElementById("main").style.display = "block";
+    document.getElementById("customer").style.display = "none";
+    document.getElementById("provisionalOrder").style.display = "none";
+    document.getElementById("kitchen").style.display = "none";
+    // Oculta la carta al regresar a la pantalla de inicio
+    var customerDiv = document.getElementById('customer');
+    customerDiv.innerHTML = ''; // Limpiar contenido existente
+}
+
+// Modifica la función displayMenu() para que no sea llamada automáticamente
+
+// Elimina la llamada a loadMenuFromTxt() en la configuración inicial
+
 
         function goBackToCustomer() {
             document.getElementById("customer").style.display = "block";
